@@ -10,16 +10,26 @@
 
     </style>
 </head>
-<body class="">
+<body>
 <div class="">
     <nav class="navbar navbar-toggleable-sm bg-light py-0 text-black welcome">
-        <a class="navbar-brand"><img height="40vh" width="50vw" src="/355/temp_symposium/views/images/judge.png"> <strong></strong> </a>
+        <a class="navbar-brand"><img height="40vh" width="50vw" src="/355/symposium/views/images/judge.png"> <strong></strong> </a>
         <form class="form-inline">
             <a class="nav-item nav-link" href="" style="border-left: 1px solid rgb(204,204,255)">Sign Out</a>
         </form>
     </nav>
-    <div class="container col-md-8 tablecon border mt-5 table-view">
-        <h5 class="mt-2">List of participants:</h5>
+    <div id="search-bg"></div>
+    <div class="container mt-5 tablecon">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <input id="search-box" type="text" name="keyword" autofocus>
+            </div>
+        </div> <!--search bar-->
+    </div>
+
+
+    <div style="background-color: white" class="container col-md-8 border tablecon mt-5 table-view">
+        <h5 class="mt-2 font-weight-light">List of participants:</h5>
         <table class="table">
             <thead style="background: rgba(254,104,0,0.2)">
             <tr>
@@ -91,7 +101,7 @@
                             <div class="row border py-0 slider">
                                 <label class="col-sm-1 pl-1 m-0">1. </label>
                                 <input type="range" class="col-md-8 range" name="range"
-                                       id="range" min="0" step="1" max="20"
+                                        min="0" step="1" max="20"
                                         data-maxwarning="20"
                                        data-minwarning="0">
                                 <input class="form-control col-sm-1 offset-1 py-0 value" type="text" name="range-value" id="range-value" style="">
@@ -99,7 +109,7 @@
                             <div class="row border py-0 slider">
                                 <label class="col-sm-1 pl-1 m-0">2. </label>
                                 <input type="range" class="col-md-8 range" name="range"
-                                       id="range" min="0" step="1" max="20"
+                                       min="0" step="1" max="20"
                                        data-maxwarning="20"
                                        data-minwarning="0">
                                 <input class="form-control col-sm-1 offset-1 py-0 value" type="text" name="range-value" id="range-value" style="">
@@ -107,7 +117,7 @@
                             <div class="row border py-0 slider">
                                 <label class="col-sm-1 pl-1 m-0">3. </label>
                                 <input type="range" class="col-md-8 range" name="range"
-                                       id="range" min="0" step="1" max="20"
+                                       min="0" step="1" max="20"
                                        data-maxwarning="20"
                                        data-minwarning="0">
                                 <input class="form-control col-sm-1 offset-1 py-0 value" type="text" name="range" id="range-value" style="">                     </div>
@@ -119,7 +129,7 @@
                             <div class="row border py-0 slider">
                                 <label class="col-sm-3 pl-1 m-0">Style/Delivery: </label>
                                 <input type="range" class="col-md-6 range" name="range"
-                                       id="range" min="0" step="1" max="8"
+                                       min="0" step="1" max="8"
                                        data-maxwarning="50"
                                        data-minwarning="0">
                                 <input class="form-control col-sm-1 offset-1 py-0 value" type="text" name="range" id="range-value" style="">
@@ -127,7 +137,7 @@
                             <div class="row border py-0 slider">
                                 <label class="col-sm-3 pl-1 m-0">Eye Contact: </label>
                                 <input type="range" class="col-md-6 range" name="range"
-                                       id="range" min="0" step="1" max="8"
+                                       min="0" step="1" max="8"
                                        data-maxwarning="50"
                                        data-minwarning="0">
                                 <input class="form-control col-sm-1 offset-1 py-0 value" type="text" name="range" id="range-value" style="">
@@ -135,7 +145,7 @@
                             <div class="row border py-0 slider">
                                 <label class="col-sm-3 pl-1 m-0">Voice & D: </label>
                                 <input type="range" class="col-md-6 range" name="range"
-                                       id="range" min="0" step="1" max="8"
+                                       min="0" step="1" max="8"
                                        data-maxwarning="50"
                                        data-minwarning="0">
                                 <input class="form-control col-sm-1 offset-1 py-0 value" type="text" name="range" id="range-value" style="">
@@ -143,7 +153,7 @@
                             <div class="row border py-0 slider">
                                 <label class="col-sm-3 pl-1 m-0">Language: </label>
                                 <input type="range" class="col-md-6 range" name="range"
-                                       id="range" min="0" step="1" max="8"
+                                       min="0" step="1" max="8"
                                        data-maxwarning="50"
                                        data-minwarning="0">
                                 <input class="form-control col-sm-1 offset-1 py-0 value" type="text" name="range" id="range-value" style="">
@@ -151,7 +161,7 @@
                             <div class="row border py-0 slider">
                                 <label class="col-sm-3 pl-1 m-0">Effectiveness: </label>
                                 <input type="range" class="col-md-6 range" name="range"
-                                       id="range" min="0" step="1" max="8"
+                                       min="0" step="1" max="8"
                                        data-maxwarning="50"
                                        data-minwarning="0">
                                 <input class="form-control col-sm-1 offset-1 py-0 value" type="text" name="range" id="range-value" style="">
