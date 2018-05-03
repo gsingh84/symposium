@@ -1,0 +1,29 @@
+input[type=range]
+{
+    cursor: pointer;
+}
+tr:hover
+{
+    cursor: pointer;
+    background-color: rgba(153,153,233,0.3);
+    /*background: linear-gradient(to right, #ff6699 10%, #ff9966 77%);*/
+
+}
+
+.table-view
+{
+    background: rgba(204,204,255,0.3);
+}
+body
+{
+    background: #F2F4F4;
+}
+.welcome
+{
+    border-bottom: 2px solid rgb(204,204,255);
+}
+#row
+{
+    background-color: #F2F4F4;
+    width: 6%;
+}

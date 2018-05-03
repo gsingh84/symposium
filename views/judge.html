@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{@BASE}}/views/styles/judge.css">
+
+    <title>Judge</title>
+    <style>
+
+    </style>
+</head>
+<body class="">
+<div class="">
+    <nav class="navbar navbar-toggleable-sm bg-light py-0 text-black welcome">
+        <a class="navbar-brand"><img height="40vh" width="50vw" src="/355/temp_symposium/views/images/judge.png"> <strong></strong> </a>
+        <form class="form-inline">
+            <a class="nav-item nav-link" href="" style="border-left: 1px solid rgb(204,204,255)">Sign Out</a>
+        </form>
+    </nav>
+    <div class="container col-md-8 tablecon border mt-5 table-view">
+        <h5 class="mt-2">List of participants:</h5>
+        <table class="table">
+            <thead style="background: rgba(254,104,0,0.2)">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">First</th>
+                <th scope="col">Last</th>
+                <th scope="col">Gender</th>
+                <th scope="col">D.O.B</th>
+                <th scope="col">Score</th>
+            </tr>
+            </thead>
+            <tbody>
+            <repeat group="{{ @participants }}" value="{{ @participant}}">
+                <tr class="col-md-12" id="{{@participant['id']}}">
+                    <th scope="row" id="row" style="background-color: #F2F4F4; width: 6%">{{@participant['id']}}</th>
+                    <td>{{@participant['first_name']}}</td>
+                    <td>{{@participant['last_name']}}</td>
+                    <td>{{@participant['gender']}}</td>
+                    <td>{{@participant['dob']}}</td>
+                    <td>N/A</td>
+                </tr>
+            </repeat>
+            </tbody>
+        </table>
+        <button class="btn btn-primary float-right mt-5">Go Back</button>
+    </div>
+</div>
+
+    <!--judge container-->
+    <div class="container bg-light p-0 rounded judge">
+        <nav class="navbar navbar-toggleable-sm bg-dark py-1 text-white">
+            <a class="navbar-brand">Name</a>
+            <form class="form-inline">
+                <button class="btn btn-sm btn-outline-danger my-2 my-sm-0" type="">Go back</button>
+            </form>
+        </nav>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-3 bg-light rounded border">
+                    <div class="col-md-12 pt-3">
+                        <img src="http://fastweb.greenriverdev.com/355/symposium/views/images/imgg.png" class="img-fluid">
+                    </div>
+                    <div class="col-md-12 mt-5 pl-0 pr-0">
+                        <label class="col border"> First Name:></label>
+                        <label class="col border"> Last Name: Name</label>
+                        <label class="col border"> Parents Name: Name</label>
+                        <label class="col border"> Age: 12</label>
+                        <label class="col border"> Level: level</label>
+                        <label class="col border"> Gender: Male</label>
+                    </div>
+                </div>
+                <div class="col-md-9 bg-light rounded">
+                    <div class="col-md-12 p-2">
+                        <div class="row border pl-2">
+                            <div class="col-md-4">
+                                <span class="font-weight-bold">BOOK: </span>
+                            </div>
+                            <div class="col-md-4">
+                                <span class="font-weight-bold">Age Group: </span>
+                            </div>
+                            <div class="col-md-4">
+                                <span class="font-weight-bold">Time Allowed: </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <p>Question on contents : Maximum Marks 20</p>
+                        <div class="col-sm-12 border">
+                            <div class="row border py-0 slider">
+                                <label class="col-sm-1 pl-1 m-0">1. </label>
+                                <input type="range" class="col-md-8 range" name="range"
+                                       id="range" min="0" step="1" max="20"
+                                        data-maxwarning="20"
+                                       data-minwarning="0">
+                                <input class="form-control col-sm-1 offset-1 py-0 value" type="text" name="range-value" id="range-value" style="">
+                            </div>
+                            <div class="row border py-0 slider">
+                                <label class="col-sm-1 pl-1 m-0">2. </label>
+                                <input type="range" class="col-md-8 range" name="range"
+                                       id="range" min="0" step="1" max="20"
+                                       data-maxwarning="20"
+                                       data-minwarning="0">
+                                <input class="form-control col-sm-1 offset-1 py-0 value" type="text" name="range-value" id="range-value" style="">
+                            </div>
+                            <div class="row border py-0 slider">
+                                <label class="col-sm-1 pl-1 m-0">3. </label>
+                                <input type="range" class="col-md-8 range" name="range"
+                                       id="range" min="0" step="1" max="20"
+                                       data-maxwarning="20"
+                                       data-minwarning="0">
+                                <input class="form-control col-sm-1 offset-1 py-0 value" type="text" name="range" id="range-value" style="">                     </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mt-2">
+                        <p>Presentation: Maximum Marks 8</p>
+                        <div class="col-sm-12 border">
+                            <div class="row border py-0 slider">
+                                <label class="col-sm-3 pl-1 m-0">Style/Delivery: </label>
+                                <input type="range" class="col-md-6 range" name="range"
+                                       id="range" min="0" step="1" max="8"
+                                       data-maxwarning="50"
+                                       data-minwarning="0">
+                                <input class="form-control col-sm-1 offset-1 py-0 value" type="text" name="range" id="range-value" style="">
+                            </div>
+                            <div class="row border py-0 slider">
+                                <label class="col-sm-3 pl-1 m-0">Eye Contact: </label>
+                                <input type="range" class="col-md-6 range" name="range"
+                                       id="range" min="0" step="1" max="8"
+                                       data-maxwarning="50"
+                                       data-minwarning="0">
+                                <input class="form-control col-sm-1 offset-1 py-0 value" type="text" name="range" id="range-value" style="">
+                            </div>
+                            <div class="row border py-0 slider">
+                                <label class="col-sm-3 pl-1 m-0">Voice & D: </label>
+                                <input type="range" class="col-md-6 range" name="range"
+                                       id="range" min="0" step="1" max="8"
+                                       data-maxwarning="50"
+                                       data-minwarning="0">
+                                <input class="form-control col-sm-1 offset-1 py-0 value" type="text" name="range" id="range-value" style="">
+                            </div>
+                            <div class="row border py-0 slider">
+                                <label class="col-sm-3 pl-1 m-0">Language: </label>
+                                <input type="range" class="col-md-6 range" name="range"
+                                       id="range" min="0" step="1" max="8"
+                                       data-maxwarning="50"
+                                       data-minwarning="0">
+                                <input class="form-control col-sm-1 offset-1 py-0 value" type="text" name="range" id="range-value" style="">
+                            </div>
+                            <div class="row border py-0 slider">
+                                <label class="col-sm-3 pl-1 m-0">Effectiveness: </label>
+                                <input type="range" class="col-md-6 range" name="range"
+                                       id="range" min="0" step="1" max="8"
+                                       data-maxwarning="50"
+                                       data-minwarning="0">
+                                <input class="form-control col-sm-1 offset-1 py-0 value" type="text" name="range" id="range-value" style="">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-12 mt-2">
+                        <p>Comments :</p>
+                        <textarea class="form-control" rows="4"></textarea>
+                    </div>
+                    <button class="btn btn-primary col-md-2 float-right mt-3 mb-2">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
+    $(".judge").hide();
+    range = $('.slider > .range');
+    value = $('.slider > .value');
+
+    value.val(range.attr('value'));
+
+    range.on('input', function(){
+        monparent=this.parentNode;
+
+        value=$(monparent).find('.value');
+        $(value).val(this.value);
+    });
+
+    value.on('input', function(){
+        monparent=this.parentNode;
+        range=$(monparent).find('.range');
+        $(range).val(this.value);
+    });
+    
+    
+    $("tr").click(function () {
+        var selected = this.id;
+        // $.post("http://fastweb.greenriverdev.com/355/symposium/models/selected.php" , {element:selected}, function (result) {
+        //     alert(result);
+        // });
+
+        $(".welcome").hide();
+        $(".tablecon").hide();
+        $(".judge").show();
+    })
+</script>
+
+
+
+</html>

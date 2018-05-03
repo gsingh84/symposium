@@ -1,0 +1,15 @@
+{
+  "name": "Ajwinder, Jacob, Gursimran",
+  "authors": [
+    {
+      "name": "Ajwinder",
+      "email": "asingh62@mail.greenriver.edu"
+    }
+  ],
+  "require": {
+    "bcosca/fatfree-core": "dev-master"
+  },
+  "autoload": {
+    "classmap":["classes/"]
+  }
+}
