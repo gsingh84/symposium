@@ -47,5 +47,13 @@
         echo $template->render('views/judge.html');
     });
 
+    //manage levels
+    $f3->route('GET|POST /levels', function ()
+    {
+        $template = new Template();
+        //render
+        echo $template->render('views/levels.html');
+    });
+
     //Run fat free
     $f3->run();
