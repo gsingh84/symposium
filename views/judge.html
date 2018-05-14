@@ -96,77 +96,84 @@
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <p>Question on contents : Maximum Marks 20</p>
-                        <div class="col-sm-12 border">
-                            <div class="row border py-0 slider">
-                                <label class="col-sm-1 pl-1 m-0">1. </label>
-                                <input type="range" class="col-md-8 range" name="range"
-                                        min="0" step="1" max="20"
-                                        data-maxwarning="20"
-                                       data-minwarning="0">
-                                <input class="form-control col-sm-1 offset-1 py-0 value" type="text" name="range-value" id="range-value" style="">
+                        <h3>Content Questions</h3>
+                        <p style="font-size:14px">Maximum Marks 20</p>
+
+                        <div id="content-sliders">
+
+                            <div class="py-0 range-slider mb-2">
+                                <div>
+                                    <label>Question 1:</label>
+                                </div>
+                                <div>
+                                    <input name="question-1" class="range-slider__range" type="range" min="0" step="1" max="20">
+                                    <span class="range-slider__value">&nbsp;</span>
+                                </div>
                             </div>
-                            <div class="row border py-0 slider">
-                                <label class="col-sm-1 pl-1 m-0">2. </label>
-                                <input type="range" class="col-md-8 range" name="range"
-                                       min="0" step="1" max="20"
-                                       data-maxwarning="20"
-                                       data-minwarning="0">
-                                <input class="form-control col-sm-1 offset-1 py-0 value" type="text" name="range-value" id="range-value" style="">
+                            <div class="py-0 range-slider mb-2">
+                                <div>
+                                    <label>Question 2:</label>
+                                </div>
+                                <div>
+                                    <input name="question-2" class="range-slider__range" type="range" min="0" step="1" max="20">
+                                    <span class="range-slider__value">&nbsp;</span>
+                                </div>
                             </div>
-                            <div class="row border py-0 slider">
-                                <label class="col-sm-1 pl-1 m-0">3. </label>
-                                <input type="range" class="col-md-8 range" name="range"
-                                       min="0" step="1" max="20"
-                                       data-maxwarning="20"
-                                       data-minwarning="0">
-                                <input class="form-control col-sm-1 offset-1 py-0 value" type="text" name="range" id="range-value" style="">                     </div>
+                            <div class="py-0 range-slider mb-2">
+                                <div>
+                                    <label>Question 3:</label>
+                                </div>
+                                <div>
+                                    <input name="question-3" class="range-slider__range" type="range" min="0" step="1" max="20">
+                                    <span class="range-slider__value">&nbsp;</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-12 mt-2">
-                        <p>Presentation: Maximum Marks 8</p>
-                        <div class="col-sm-12 border">
-                            <div class="row border py-0 slider">
-                                <label class="col-sm-3 pl-1 m-0">Style/Delivery: </label>
-                                <input type="range" class="col-md-6 range" name="range"
-                                       min="0" step="1" max="8"
-                                       data-maxwarning="50"
-                                       data-minwarning="0">
-                                <input class="form-control col-sm-1 offset-1 py-0 value" type="text" name="range" id="range-value" style="">
+                        <h3>Presentation</h3>
+                        <p style="font-size:14px">Maximum Marks 8</p>
+                        <div class="col-sm-12">
+
+                            <div class="row py-0 range-slider mb-2">
+                                <label class="col-sm-3 pl-1 m-0">Style/Delivery:</label>
+                                <div class="col-md-9">
+                                    <input name="delivery" class="range-slider__range" type="range" min="0" step="1" max="8">
+                                    <span class="range-slider__value">&nbsp;</span>
+                                </div>
                             </div>
-                            <div class="row border py-0 slider">
-                                <label class="col-sm-3 pl-1 m-0">Eye Contact: </label>
-                                <input type="range" class="col-md-6 range" name="range"
-                                       min="0" step="1" max="8"
-                                       data-maxwarning="50"
-                                       data-minwarning="0">
-                                <input class="form-control col-sm-1 offset-1 py-0 value" type="text" name="range" id="range-value" style="">
+
+                            <div class="row py-0 range-slider mb-2">
+                                <label class="col-sm-3 pl-1 m-0">Eye-Contact:</label>
+                                <div class="col-md-9">
+                                    <input name="eye-contact" class="range-slider__range" type="range" min="0" step="1" max="8">
+                                    <span class="range-slider__value">&nbsp;</span>
+                                </div>
                             </div>
-                            <div class="row border py-0 slider">
-                                <label class="col-sm-3 pl-1 m-0">Voice & D: </label>
-                                <input type="range" class="col-md-6 range" name="range"
-                                       min="0" step="1" max="8"
-                                       data-maxwarning="50"
-                                       data-minwarning="0">
-                                <input class="form-control col-sm-1 offset-1 py-0 value" type="text" name="range" id="range-value" style="">
+
+                            <div class="row py-0 range-slider mb-2">
+                                <label class="col-sm-3 pl-1 m-0">Voice & D:</label>
+                                <div class="col-md-9">
+                                    <input name="voice" class="range-slider__range" type="range" min="0" step="1" max="8">
+                                    <span class="range-slider__value">&nbsp;</span>
+                                </div>
                             </div>
-                            <div class="row border py-0 slider">
-                                <label class="col-sm-3 pl-1 m-0">Language: </label>
-                                <input type="range" class="col-md-6 range" name="range"
-                                       min="0" step="1" max="8"
-                                       data-maxwarning="50"
-                                       data-minwarning="0">
-                                <input class="form-control col-sm-1 offset-1 py-0 value" type="text" name="range" id="range-value" style="">
+
+                            <div class="row py-0 range-slider mb-2">
+                                <label class="col-sm-3 pl-1 m-0">Language:</label>
+                                <div class="col-md-9">
+                                    <input name="language" class="range-slider__range" type="range" min="0" step="1" max="8">
+                                    <span class="range-slider__value">&nbsp;</span>
+                                </div>
                             </div>
-                            <div class="row border py-0 slider">
-                                <label class="col-sm-3 pl-1 m-0">Effectiveness: </label>
-                                <input type="range" class="col-md-6 range" name="range"
-                                       min="0" step="1" max="8"
-                                       data-maxwarning="50"
-                                       data-minwarning="0">
-                                <input class="form-control col-sm-1 offset-1 py-0 value" type="text" name="range" id="range-value" style="">
+
+                            <div class="row py-0 range-slider mb-2">
+                                <label class="col-sm-3 pl-1 m-0">Effectiveness:</label>
+                                <div class="col-md-9">
+                                    <input name="delivery" class="range-slider__range" type="range" min="0" step="1" max="8">
+                                    <span class="range-slider__value">&nbsp;</span>
+                                </div>
                             </div>
-                        </div>
 
                     </div>
                     <div class="col-md-12 mt-2">
@@ -217,6 +224,23 @@
     })
 </script>
 
+<script
+>    var rangeSlider = function(){
+        var slider = $('.range-slider'),
+            range = $('.range-slider__range'),
+            value = $('.range-slider__value');
+        slider.each(function(){
+            value.each(function(){
+                var value = $(this).prev().attr('value');
+                $(this).html(value);
+            });
+            range.on('input', function(){
+                $(this).next(value).html(this.value);
+            });
+        });
+    };
+    rangeSlider();
+</script>
 
 
 </html>
