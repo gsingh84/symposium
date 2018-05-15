@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{@BASE}}/views/styles/judge.css">
+
+    <title>Judge</title>
+    <style>
+
+    </style>
+</head>
+<body>
+<div class="">
+    <div id="search-bg"></div>
+    <div class="container mt-0 tablecon">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <!--<input placeholder="Name" id="search-box" type="text" name="keyword" autofocus>-->
+            </div>
+        </div> <!--search bar-->
+    </div>
+</div>
+
+<!--judge container-->
+<div class="container mt-5 bg-light p-0 rounded judge">
+    <nav class="navbar navbar-toggleable-sm bg-dark py-1 text-white">
+        <a class="navbar-brand">{{@participants['first_name']}} {{@participants['last_name']}}</a>
+        <form class="form-inline">
+            <button class="btn btn-sm btn-outline-danger my-2 my-sm-0" type="">Go back</button>
+        </form>
+    </nav>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-3 bg-light rounded border">
+                <div class="col-md-12 pt-3">
+                    <img src="http://fastweb.greenriverdev.com/355/symposium/views/images/imgg.png" class="img-fluid">
+                </div>
+                <div class="col-md-12 mt-5 pl-0 pr-0">
+                    <label class="col border"> First Name: {{@participants['first_name']}}</label>
+                    <label class="col border"> Last Name: {{@participants['last_name']}}</label>
+                    <label class="col border"> Parents Name: Name</label>
+                    <label class="col border"> Age: {{@participants['dob']}}</label>
+                    <label class="col border"> Level: level</label>
+                    <label class="col border"> Gender: {{@participants['gender']}}</label>
+                </div>
+            </div>
+            <div class="col-md-9 bg-light rounded">
+                <div class="col-md-12 p-2">
+                    <div class="row border pl-2">
+                        <div class="col-md-4">
+                            <span class="font-weight-bold">BOOK: </span>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="font-weight-bold">Age Group: </span>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="font-weight-bold">Time Allowed: </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <h3>Content Questions</h3>
+                    <p style="font-size:14px">Maximum Marks 20</p>
+
+                    <div id="content-sliders">
+
+                        <div class="py-0 range-slider mb-2">
+                            <div>
+                                <label>Question 1:</label>
+                            </div>
+                            <div>
+                                <input name="question-1" class="range-slider__range" type="range" min="0" step="1" max="20">
+                                <span class="range-slider__value">&nbsp;</span>
+                            </div>
+                        </div>
+                        <div class="py-0 range-slider mb-2">
+                            <div>
+                                <label>Question 2:</label>
+                            </div>
+                            <div>
+                                <input name="question-2" class="range-slider__range" type="range" min="0" step="1" max="20">
+                                <span class="range-slider__value">&nbsp;</span>
+                            </div>
+                        </div>
+                        <div class="py-0 range-slider mb-2">
+                            <div>
+                                <label>Question 3:</label>
+                            </div>
+                            <div>
+                                <input name="question-3" class="range-slider__range" type="range" min="0" step="1" max="20">
+                                <span class="range-slider__value">&nbsp;</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-2">
+                    <h3>Presentation</h3>
+                    <p style="font-size:14px">Maximum Marks 8</p>
+                    <div class="col-sm-12">
+
+                        <div class="row py-0 range-slider mb-2">
+                            <label class="col-sm-3 pl-1 m-0">Style/Delivery:</label>
+                            <div class="col-md-9">
+                                <input name="delivery" class="range-slider__range" type="range" min="0" step="1" max="8">
+                                <span class="range-slider__value">&nbsp;</span>
+                            </div>
+                        </div>
+
+                        <div class="row py-0 range-slider mb-2">
+                            <label class="col-sm-3 pl-1 m-0">Eye-Contact:</label>
+                            <div class="col-md-9">
+                                <input name="eye-contact" class="range-slider__range" type="range" min="0" step="1" max="8">
+                                <span class="range-slider__value">&nbsp;</span>
+                            </div>
+                        </div>
+
+                        <div class="row py-0 range-slider mb-2">
+                            <label class="col-sm-3 pl-1 m-0">Voice & D:</label>
+                            <div class="col-md-9">
+                                <input name="voice" class="range-slider__range" type="range" min="0" step="1" max="8">
+                                <span class="range-slider__value">&nbsp;</span>
+                            </div>
+                        </div>
+
+                        <div class="row py-0 range-slider mb-2">
+                            <label class="col-sm-3 pl-1 m-0">Language:</label>
+                            <div class="col-md-9">
+                                <input name="language" class="range-slider__range" type="range" min="0" step="1" max="8">
+                                <span class="range-slider__value">&nbsp;</span>
+                            </div>
+                        </div>
+
+                        <div class="row py-0 range-slider mb-2">
+                            <label class="col-sm-3 pl-1 m-0">Effectiveness:</label>
+                            <div class="col-md-9">
+                                <input name="delivery" class="range-slider__range" type="range" min="0" step="1" max="8">
+                                <span class="range-slider__value">&nbsp;</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-12 mt-2">
+                        <p>Comments :</p>
+                        <textarea class="form-control" rows="4"></textarea>
+                    </div>
+                    <button class="btn btn-primary col-md-2 float-right mt-3 mb-2" id="submit">Save Scores</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script>
+
+    $("#submit").click(function () {
+
+        location.href = "http://fastweb.greenriverdev.com/355/symposium/judge";
+
+    });
+</script>
+
+<script
+>    var rangeSlider = function(){
+    var slider = $('.range-slider'),
+        range = $('.range-slider__range'),
+        value = $('.range-slider__value');
+    slider.each(function(){
+        value.each(function(){
+            var value = $(this).prev().attr('value');
+            $(this).html(value);
+        });
+        range.on('input', function(){
+            $(this).next(value).html(this.value);
+        });
+    });
+};
+rangeSlider();
+</script>
+
+
+</html>

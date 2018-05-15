@@ -37,8 +37,7 @@
 
     $f3->route('GET|POST /judge', function ($f3)
     {
-
-        $participants = getAllParticipants();
+        $participants = getAllRows("participants");
 
         $f3->set('participants', $participants);
 
@@ -47,20 +46,60 @@
         echo $template->render('views/judge.html');
     });
 
-    //manage levels
-    $f3->route('GET|POST /levels', function ()
+    $f3->route('GET|POST /judge/@id', function ($f3,$params)
     {
+        $id = $params['id'];
+
+        $participants = getParticipant($id);
+
+        $f3->set('participants', $participants);
+
+        $template = new Template();
+        //render
+        echo $template->render('views/participant.html');
+    });
+
+    //manage levels
+    $f3->route('GET|POST /levels', function ($f3)
+    {
+        $data = getLevels();
+        $f3->set('levels', $data);
+
+        $levels = $_POST['data'];
+        $levelName =  $_POST['input'];
+
+        //insert level
+        if(strlen($levelName) > 0 && sizeof($levels) > 0) {
+            $id = insertLevels($levelName);
+
+            foreach ($levels as $criteria) {
+                insertCriteria($criteria, $id);
+            }
+        }
+
         $template = new Template();
         //render
         echo $template->render('views/levels.html');
     });
 
-    //manage judges
-    $f3->route('GET|POST /judges', function ()
-    {
+    //edit levels
+    $f3->route("GET /levels/@level_id", function ($f3, $params){
+
+        $f3->set('criteria', getCriteria($params['level_id']));
         $template = new Template();
         //render
-        echo $template->render('views/judges.html');
+        echo $template->render('views/edit-levels.html');
+    });
+
+
+
+    //manage judges
+    $f3->route('GET|POST /judges', function ($f3)
+    {
+            $template = new Template();
+            //render
+            echo $template->render('views/judges.html');
+
     });
 
 

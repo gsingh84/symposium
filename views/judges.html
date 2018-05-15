@@ -33,24 +33,17 @@
                     </div>
                 </div>
 
-                <div class="form-group row m-0 border border-secondary p-2 pt-3 mb-2">
-                    <div class="col-6">
-                        <p class="h5 font-weight-light">Tina</p>
+                <repeat group="{{@judges}}" value="{{@judge}}">
+                    <div class="form-group row m-0 border border-secondary p-2 pt-3 mb-2">
+                        <div class="col-6">
+                            <p class="h5 font-weight-light">{{(@judge)['name']}}</p>
+                        </div>
+                        <div class="col-6 text-right">
+                            <button id="{{(@judge)['id']}}" class="delete-judge btn-sm rounded-0 btn-danger">Delete</button>
+                        </div>
                     </div>
-                    <div class="col-6 text-right">
-                        <button class="delete-judge btn-sm rounded-0 btn-danger">Delete</button>
-                    </div>
-                </div>
 
-                <div class="form-group row m-0 border border-secondary p-2 pt-3 mb-2">
-                    <div class="col-6">
-                        <p class="h5 font-weight-light">ajredniwja</p>
-                    </div>
-                    <div class="col-6 text-right">
-                        <button class="delete-judge btn-sm rounded-0 btn-danger">Delete</button>
-                    </div>
-                </div>
-
+                </repeat>
 
             </div>
         </div>
@@ -66,12 +59,14 @@
 $(document).ready(function() {
     $("#add-btn").click(function () {
         if ($('#judge-input').val() != '') {
-            $('.display-judges').append(' <div class="form-group row m-0 border border-secondary p-2 pt-3 mb-2"><div class="col-6"><p class="h5 font-weight-light">'+$('#judge-input').val()+'</p></div><div class="col-6 text-right"><button class="delete-judge btn-sm rounded-0 btn-danger">Delete</button></div></div>');
+            $.post(window.location, {'insert-judge': $('#judge-input').val()}, function(data) { location.reload() });
         }
-        $('#judge-input').val('');
+
     });
 
     $(".delete-judge").click(function() {
+        $.post(window.location, {'delete-judge': $(this).attr('id')}, function(data) {
+        });
         $(this).parent().parent().remove();
     });
 });

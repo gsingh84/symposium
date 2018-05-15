@@ -19,6 +19,19 @@
             background-repeat: no-repeat;
             background-attachment: fixed;
         }
+
+        .level-link:hover {
+            text-decoration: none;
+        }
+
+        .level-block {
+            color: black;
+        }
+
+        .level-block:hover {
+            background-color: #ABEBC6;
+            transition: 0.5s ease all;
+        }
     </style>
 </head>
 <body>
@@ -44,32 +57,24 @@
                             </div>
                         </div>
 
-                        <div class="form-group row m-0 border border-secondary p-2 pt-3 mb-2">
-                            <div class="col-6">
-                                <p class="h5 font-weight-light">Level 1</p>
-                            </div>
-                            <div class="col-6 text-right">
-                                <button class="btn-sm rounded-0 btn-outline-primary">Edit</button>
-                                <button class="btn-sm rounded-0 btn-outline-danger">Disable</button>
-                            </div>
-                        </div>
-
-                        <div class="form-group row m-0 border border-secondary p-2 pt-3">
-                            <div class="col-6">
-                                <p class="h5 font-weight-light">Level 2</p>
-                            </div>
-                            <div class="col-6 text-right">
-                                <button class="btn-sm rounded-0 btn-outline-primary">Edit</button>
-                                <button class="btn-sm rounded-0 btn-outline-danger">Disable</button>
-                            </div>
-                        </div>
+                        <repeat group="{{ @levels }}" value="{{ @level }}">
+                            <a class="level-link" href="{{@BASE}}/levels/{{ @level['id']}}"><div class="level-block form-group row m-0 border border-secondary p-2 pt-3 mb-2">
+                                <div class="col-6">
+                                    <p class="h5 font-weight-light">{{@level['level']}}</p>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <!--<button class="btn-sm rounded-0 btn-outline-primary">Edit</button>-->
+                                    <button class="btn-sm rounded-0 btn-outline-danger">Disable</button>
+                                </div>
+                            </div></a>
+                        </repeat>
                     </div> <!--display levels-->
 
                     <div id="add-level">
                         <div class="row form-group">
                             <div class="col">
                                 <label><small>Level name</small></label>
-                                <input class="form-control" type="text" name="level-name">
+                                <input id="level-name" class="form-control" type="text" name="level-name">
                             </div>
                         </div>
 
@@ -79,13 +84,50 @@
                             </div>
                         </div>
 
-                        <div id="criteria-text"></div>
-                    </div>
+                        <div id="criteria-text">
+                            <div class='row form-group'>
+                                <div class='col-9'>
+                                    <input id='cret-type' class='form-control' type='text' name='level-type' placeholder='Criteria type'>
+                                </div>
+                                <div class='col-3 text-right'>
+                                    <button id='confirm' class='btn btn-warning rounded-0'>Add</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="added"></div> <!--added levels-->
+
+                        <div id="add-rm-block">
+                            <div class="form-group row mt-1">
+                                <div class="col text-right">
+                                    <button id="remove-text" class="btn btn-sm bg-danger">Remove</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group row mt-4">
+                                <div class="col">
+                                    <button id="submit" class="btn btn-outline-success btn-block rounded-0">Submit</button>
+                                </div>
+                            </div>
+                        </div> <!--remove/submit button-->
+                    </div> <!--add level block-->
+
                 </div>
             </div>
         </div>
     </div>
 </div>
+</div>
+
+<!--<div class='row m-0 border border-secondary p-1'>-->
+    <!--<div class='col-8'>-->
+        <!--<p class='h-6'>val</p>-->
+    <!--</div>-->
+    <!--<div id='remove' class='col-4'>-->
+        <!--<p class='h6 text-danger'>X</p>-->
+    <!--</div>-->
+<!--</div>-->
+
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -95,6 +137,8 @@
 
 <script>
     $("#add-level").hide(); //hide add level field initially
+    $("#criteria-text").hide();
+    $("#add-rm-block").hide();
 
     //display add level field on add btn click
     $("#add-btn").click(function () {
@@ -107,14 +151,67 @@
 
     //create criteria type input on click
     $("#add-criteria-btn").click(function() {
-        $("#criteria-text").html("<div class='row form-group'>\n" +
-            "    <div class='col-9'>\n" +
-            "        <input class='form-control' type='text' name='level-type' placeholder='Criteria type'>\n" +
-            "    </div>\n" +
-            "    <div class='col-3 text-right'>\n" +
-            "        <button id='criteria-added' class='btn btn-warning rounded-0'>Confirm</button>\n" +
-            "    </div>\n" +
-            "</div>");
+        $("#criteria-text").show(150);
     });
+
+    var levelId = 0;
+    var criterias = [];
+    //confirm criteria
+    $("#confirm").click(function(){
+        var val = $("#cret-type").val();
+        if(val.length > 0) {
+            criterias.push(val);
+            levelId++;
+            $("#added").append("<div id='level-id"+levelId+"' class='row m-0 pt-1 border border-secondary p-1'>\n" +
+                "    <div class='col'>\n" +
+                "        <p class='h-6'>"+val+"</p>\n" +
+                "    </div>\n" +
+                "</div>");
+            $("#add-rm-block").fadeIn(150);
+        }
+
+        $("#cret-type").val('');
+    });
+
+    //remove level criteria
+    $("#remove-text").click(function(){
+        $('#level-id'+levelId).remove();
+
+        if(levelId > 0) {
+            levelId--;
+            criterias.splice(criterias.length - 1, 1);
+        }
+        if(levelId == 0) {
+            $("#add-rm-block").fadeOut(150);
+            criterias = [];
+        }
+    });
+
+    //submit data
+    $("#submit").click(function(){
+       sendLevelName($("#level-name").val(), criterias);
+        $("#add-rm-block").hide();
+        $("#level-name").val('')
+        $("#added").html('');
+    });
+
+    //send array of data to php file
+    function sendData(data) {
+        $.ajax({
+            type: "POST",
+            url: "{{@BASE}}/levels",
+            data: { data : data},
+            success: function(response) {
+                alert(response);
+            }
+        });
+    }
+
+    //send single input
+    function sendLevelName(input, data) {
+        $.post("{{@BASE}}/levels", {input:input, data:data}, function(response){
+           alert(response);
+        });
+    }
 </script>
 </html>

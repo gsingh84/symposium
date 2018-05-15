@@ -55,13 +55,83 @@
     }
 
     /**
+     * Insert level name
+     * @param level new level to insert
+     * @return last insert row id
+     */
+    function insertLevels($level){
+
+        //define query
+        $sql = "INSERT INTO levels(level) VALUES (:level)";
+
+        global $dbh;
+
+        //prepare the statement
+        $statement = $dbh->prepare($sql);
+
+        //bind parameters
+        $statement->bindParam(':level', $level, PDO::PARAM_STR);
+
+        //execute statement
+        $statement->execute();
+
+        $id = $dbh->lastInsertId();
+
+        return $id;
+    }
+
+    function insertScores($id, $score)
+    {
+        global $dbh;
+
+        //1. Define the query
+        $sql = "INSERT INTO student VALUES (:id, :score);";
+
+        //2. Prepare the statement
+        $statement = $dbh->prepare($sql);
+
+        //3. Bind parameters
+        $statement->bindParam(':id', $id, PDO::PARAM_STR);
+        $statement->bindParam(':last', $last, PDO::PARAM_STR);
+        $statement->bindParam(':first', $first, PDO::PARAM_STR);
+        $statement->bindParam(':birthdate', $birthdate, PDO::PARAM_STR);
+        $statement->bindParam(':gpa', $gpa, PDO::PARAM_STR);
+        $statement->bindParam(':advisor', $advisor, PDO::PARAM_STR);
+
+        //4. Execute the query
+        $success = $statement->execute();
+
+
+        //5. Return the result
+        return $success;
+    }
+
+    function insertCriteria($text, $id){
+
+        //define query
+        $sql = "INSERT INTO criteria(criteria, level_id) VALUES (:criteria, (SELECT id FROM levels WHERE id = :level_id))";
+
+        global $dbh;
+
+        //prepare the statement
+        $statement = $dbh->prepare($sql);
+
+        //bind parameters
+        $statement->bindParam(':criteria', $text, PDO::PARAM_STR);
+        $statement->bindParam(':level_id', $id, PDO::PARAM_INT);
+
+        //execute statement
+        $statement->execute();
+    }
+
+    /**
      * get all candidates list from database
      *
      * @return all participants list
      */
-    function getAllParticipants() {
+    function getAllRows($tableName) {
         //get all rows from db
-        $sql = "SELECT * FROM participants";
+        $sql = "SELECT * FROM $tableName";
 
         global $dbh;
 
@@ -78,31 +148,73 @@
         return $result;
     }
 
-/**
- * get particular participant
- *
- * @return selected participant
- */
-function getParticipant($id) {
-    //get all rows from db
-    $sql = "SELECT * FROM participants WHERE id = :id ";
+    function getLevels() {
+        //get all rows from db
+        $sql = "SELECT * FROM levels";
 
-    global $dbh;
+        global $dbh;
 
-    //prepare statement
-    $statement = $dbh->prepare($sql);
+        //prepare statement
+        $statement = $dbh->prepare($sql);
 
-    //bind params
-    $statement->bindParam(':id',$id, PDO::PARAM_INT);
+        //execute statement
+        $statement->execute();
 
-    //execute statement
-    $statement->execute();
+        //fetch all rows
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-    //fetch all rows
-    $result = $statement->fetch(PDO::FETCH_ASSOC);
+        //return data
+        return $result;
+    }
 
-    //return data
-    return $result;
-}
+    //get criteria text by id
+    function getCriteria($id) {
+        //get all rows from db
+        $sql = "SELECT * FROM criteria WHERE level_id = :id";
+
+        global $dbh;
+
+        //prepare statement
+        $statement = $dbh->prepare($sql);
+
+        //bind params
+        $statement->bindParam(':id', $id, PDO::PARAM_INT);
+
+        //execute statement
+        $statement->execute();
+
+        //fetch all rows
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        //return data
+        return $result;
+    }
+
+    /**
+     * get particular participant
+     *
+     * @return selected participant
+     */
+    function getParticipant($id) {
+        //get all rows from db
+        $sql = "SELECT * FROM participants WHERE id = :id ";
+
+        global $dbh;
+
+        //prepare statement
+        $statement = $dbh->prepare($sql);
+
+        //bind params
+        $statement->bindParam(':id',$id, PDO::PARAM_INT);
+
+        //execute statement
+        $statement->execute();
+
+        //fetch all rows
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        //return data
+        return $result;
+    }
 
 
