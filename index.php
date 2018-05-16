@@ -37,11 +37,16 @@
 
     $f3->route('GET|POST /judge', function ($f3)
     {
+        session_start();
         $participants = getAllRows("participants");
+        $scores = getAllRows("scores");
 
         $f3->set('participants', $participants);
+        $f3->set('scores', $scores);
+//        print_r($scores);
 
         $template = new Template();
+
         //render
         echo $template->render('views/judge.html');
     });
@@ -53,6 +58,31 @@
         $participants = getParticipant($id);
 
         $f3->set('participants', $participants);
+
+        if (isset($_POST["submit"]))
+        {
+            session_start();
+            $q1 = $_POST["question-1"];
+            $q2 = $_POST["question-2"];
+            $q3 = $_POST["question-3"];
+
+            $delivery = $_POST["delivery"];
+            $eyeContact = $_POST["eye-contact"];
+            $voice = $_POST["voice"];
+            $language = $_POST["language"];
+            $effectiveness = $_POST["effectiveness"];
+
+            $total = $q1 + $q3 + $q2 + $delivery + $eyeContact + $voice + $language + $effectiveness;
+
+
+            $result = insertScores($id,$total);
+
+            if ($result)
+            {
+                $_SESSION["score"] = $total;
+                header("Location: http://fastweb.greenriverdev.com/355/symposium/judge");
+            }
+        }
 
         $template = new Template();
         //render
@@ -92,13 +122,24 @@
     });
 
 
-
     //manage judges
     $f3->route('GET|POST /judges', function ($f3)
     {
-            $template = new Template();
-            //render
-            echo $template->render('views/judges.html');
+        $judges = getAllRows("judges");
+
+        $f3->set('judges', $judges);
+        $template = new Template();
+
+        if ($_POST['delete-judge'] > 0) {
+            deleteJudge($_POST['delete-judge']);
+        }
+
+        if (!empty($_POST['insert-judge'])) {
+            insertJudge($_POST['insert-judge']);
+        }
+
+        //render
+        echo $template->render('views/judges.html');
 
     });
 
