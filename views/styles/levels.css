@@ -1,0 +1,23 @@
+.form-control {
+    background-color: #D5DBDB;
+}
+
+body{
+    background: linear-gradient(to top left, #16a085,#95a5a6);
+    height: 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.level-link:hover {
+    text-decoration: none;
+}
+
+.level-block {
+    color: black;
+}
+
+.level-block:hover {
+    background-color: #ABEBC6;
+    transition: 0.5s ease all;
+}

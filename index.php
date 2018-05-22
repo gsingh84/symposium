@@ -7,7 +7,8 @@
     //Require the files (fat-free)
     require_once('vendor/autoload.php');
 
-    require "models/dbFunctions.php";
+    require_once '/home/gsinghgr/config.php';
+//    require "models/dbFunctions.php";
 
     //Create an instance of the Base Class
     $f3 = Base :: instance();
@@ -23,9 +24,19 @@
      */
     $f3->route('GET|POST /', function ()
     {
+        //testing
+        $database = new Database();
+
         $template = new Template();
         //render
-        echo $template->render('views/admin.html');
+        echo $template->render('views/admin-home.html');
+    });
+
+    $f3->route('GET|POST /create', function ()
+    {
+        $template = new Template();
+        //render
+        echo $template->render('views/create-comp.html');
     });
 
     $f3->route('GET|POST /add-participant', function ()
@@ -43,7 +54,6 @@
 
         $f3->set('participants', $participants);
         $f3->set('scores', $scores);
-//        print_r($scores);
 
         $template = new Template();
 
