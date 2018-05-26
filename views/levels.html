@@ -19,7 +19,7 @@
                         <p class="h5 font-weight-light">Manage Levels</p>
                     </div>
                     <div class="col-4 text-right">
-                        <a id="go-back" href="{{@BASE}}"><span class="h4">&larr; </span></a>
+                        <a id="go-back" href="{{@BASE}}/create"><span class="h4">&larr; </span></a>
                     </div>
                 </div>
                 <hr>
@@ -33,15 +33,30 @@
                         </div>
 
                         <repeat group="{{ @levels }}" value="{{ @level }}">
-                            <a class="level-link" href="{{@BASE}}/levels/{{ @level['id']}}"><div class="level-block form-group row m-0 border border-secondary p-2 pt-3 mb-2">
-                                <div class="col-6">
-                                    <p class="h5 font-weight-light">{{@level['level']}}</p>
-                                </div>
-                                <div class="col-6 text-right">
-                                    <!--<button class="btn-sm rounded-0 btn-outline-primary">Edit</button>-->
-                                    <button class="btn-sm rounded-0 btn-outline-danger">Disable</button>
-                                </div>
-                            </div></a>
+                            <check if="{{ @level['active'] == 1}}">
+                                <true>
+                                    <a class="level-link" href="{{@BASE}}/levels/{{ @level['id']}}"><div  class="level-block form-group row m-0 border border-secondary p-2 pt-3 mb-2">
+                                        <div class="col-6">
+                                            <p class="h5 font-weight-light">{{@level['level']}}</p>
+                                        </div>
+                                        <div class="col-6 text-right">
+                                            <button id="disable-{{ @level['id']}}" class="btn-sm rounded-0 btn-outline-danger">Disable</button>
+                                        </div>
+                                    </div></a>
+                                </true>
+
+                                <false>
+                                    <a class="level-link" href="{{@BASE}}/levels/{{ @level['id']}}"><div class="level-block form-group row m-0 border border-mute p-2 pt-3 mb-2">
+                                        <div class="col-6">
+                                            <p class="h5 font-weight-light text-muted">{{@level['level']}}</p>
+                                        </div>
+                                        <div class="col-6 text-right text-muted">
+                                            <button id="enable-{{ @level['id']}}" class="btn-sm rounded-0 btn-outline-success">Enable</button>
+                                        </div>
+                                    </div></a>
+                                </false>
+                            </check>
+
                         </repeat>
                     </div> <!--display levels-->
 

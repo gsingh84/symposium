@@ -1,4 +1,14 @@
 
+//create competition
+$("form").on("submit", function (event) {
+    event.preventDefault();
+    var data = $('form').serializeArray();
+    console.log(data);
+    $.post("./levels", data, function(response){
+
+    });
+});
+
 //upload file on click
 $("#upload").click(function(evt){
     evt.preventDefault();
@@ -10,7 +20,7 @@ $("#upload").click(function(evt){
 
     //send ajax request
     $.ajax({
-        url: '{{@BASE}}/models/uploadFile.php', // point to server-side PHP script
+        url: './models/uploadFile.php', // point to server-side PHP script
         dataType: 'text',  // what to expect back from the PHP script, if anything
         cache: false,
         contentType: false,
@@ -18,6 +28,7 @@ $("#upload").click(function(evt){
         data: form_data,
         type: 'post',
         success: function(response){
+            alert(response);
             $("#message").removeClass();
             if(response == "success") {
                 success();

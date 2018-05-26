@@ -10,7 +10,7 @@
             $temp = explode(".", $_FILES["file"]["name"]);
             $newfilename = 'data.' . end($temp);
             move_uploaded_file($_FILES['file']['tmp_name'], 'uploads/' . $newfilename);
-            include "readExcel.php"; //read file and add entries into database
+//            include "readExcel.php"; //read file and add entries into database
         }
     }
 

@@ -20,7 +20,7 @@
                     <legend class="font-weight-light h5 mt-3">List of Judges</legend>
                 </div>
                 <div class="col-4 text-right">
-                    <a href="{{@BASE}}"><span class="h4">&larr; </span></a>
+                    <a href="{{@BASE}}/create"><span class="h4">&larr; </span></a>
                 </div>
             </div>
             <hr>
@@ -36,7 +36,7 @@
                 <repeat group="{{@judges}}" value="{{@judge}}">
                     <div class="form-group row m-0 border border-secondary p-2 pt-3 mb-2">
                         <div class="col-6">
-                            <p class="h5 font-weight-light">{{(@judge)['name']}}</p>
+                            <p class="h5 font-weight-light">{{(@judge)['judge_name']}}</p>
                         </div>
                         <div class="col-6 text-right">
                             <button id="{{(@judge)['id']}}" class="delete-judge btn-sm rounded-0 btn-danger">Delete</button>

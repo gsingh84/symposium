@@ -32,7 +32,6 @@ class DbObject
         }
         catch(PDOException $e){
             echo "fail: " . $e->getMessage();
-            echo $e->getMessage();
         }
 
         return $dbh;

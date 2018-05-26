@@ -81,8 +81,43 @@ class Database extends DbObject
         $options = array("id" => $id);
 
         $result = $this->select($tableName, $options);
-
         return $result->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Get all levels
+     * @return array results
+     */
+    function getLevels()
+    {
+        $tableName = "levels";
+        $options = array();
+
+        $result = $this->select($tableName, $options);
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Get all judges list
+     * @return array results
+     */
+    function getJudges()
+    {
+        $tableName = "judges";
+        $options = array();
+
+        $result = $this->select($tableName, $options);
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    function getCriteriaByLevelId($id)
+    {
+        $tableName = "criteria";
+        $options = array("level_id" => $id);
+
+        $result = $this->select($tableName, $options);
+
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**

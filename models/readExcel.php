@@ -21,6 +21,7 @@
     //loop over to get file as worksheet
     foreach ($objPHPExcel->getWorksheetIterator() as $worksheet)
     {
+
         $highestRow = $worksheet->getHighestRow();
         $hCol = $worksheet->getHighestColumn();
         $nCol = ord(strtolower($hCol)) - 96;

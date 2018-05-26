@@ -8,7 +8,7 @@
     require_once('vendor/autoload.php');
 
     require_once '/home/gsinghgr/config.php';
-//    require "models/dbFunctions.php";
+    require_once "models/dbFunctions.php";
 
     //Create an instance of the Base Class
     $f3 = Base :: instance();
@@ -32,8 +32,15 @@
         echo $template->render('views/admin-home.html');
     });
 
-    $f3->route('GET|POST /create', function ()
+    $f3->route('GET|POST /create', function ($f3)
     {
+        //get all levels and judges list
+        $db = new Database();
+        $levels = $db->getLevels();
+        $judges = $db->getJudges();
+        $f3->set('levels', $levels);
+        $f3->set('judges', $judges);
+
         $template = new Template();
         //render
         echo $template->render('views/create-comp.html');
@@ -102,19 +109,28 @@
     //manage levels
     $f3->route('GET|POST /levels', function ($f3)
     {
-        $data = getLevels();
+        //get all levels list
+        $db = new Database();
+        $data = $db->getLevels();
         $f3->set('levels', $data);
 
+        //get input data from levels.html
         $levels = $_POST['data'];
         $levelName =  $_POST['input'];
 
-        //insert level
-        if(strlen($levelName) > 0 && sizeof($levels) > 0) {
-            $id = insertLevels($levelName);
+        if(strlen($_POST["level_id"]) > 0 && strlen($_POST["active"]) > 0) {
+            $active = $_POST["active"];
+            return $db->updateLevel(array("active" => $active), $_POST['level_id']);
+        }
 
-            foreach ($levels as $criteria) {
-                insertCriteria($criteria, $id);
+        //insert level and criteria
+        if(strlen($levelName) > 0 && sizeof($levels) > 0) {
+            $id = $db->insertLevel(array($levelName));
+
+            foreach ($levels as $level) {
+                $db->insertCriteria(array($level, $id));
             }
+            return;
         }
 
         $template = new Template();
@@ -125,7 +141,13 @@
     //edit levels
     $f3->route("GET /levels/@level_id", function ($f3, $params){
 
-        $f3->set('criteria', getCriteria($params['level_id']));
+        //get criteria text from database
+        $db = new Database();
+        $data = $db->getCriteriaByLevelId($params['level_id']);
+
+        //set data variable
+        $f3->set('criteria', $data);
+
         $template = new Template();
         //render
         echo $template->render('views/edit-levels.html');
