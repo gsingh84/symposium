@@ -5,14 +5,14 @@ $("form").on("submit", function (event) {
     var data = $('form').serializeArray();
     data.push({name:'submit', value:'clicked'});
 
-    if($("#fileToUpload").val()) {
-        $.post(window.location, data, function(response){
-            // alert(response);
-            var comp_id = response;
+    $.post(window.location, data, function(response){
+        // alert(response);
+        var comp_id = response;
+        success_msg("Competition Created");
+        if($("#fileToUpload").val()) {
             readFile(comp_id);
-            success_msg("Competition Created");
-        });
-    }
+        }
+    });
 
     // $.post("./levels", data, function(response){
     //
