@@ -46,3 +46,17 @@ a:link{
 .inner-box {
     padding: 10px;
 }
+
+.overlay{
+    transition-property: all;
+    transition-duration: 0.5s;
+    position: fixed;
+    margin: auto;
+    opacity: 0.9;
+    top: 50px;
+    left: 530px;
+    width: 25%;
+    height: 10%;
+    z-index: 10;
+    background-color: #28B463; /*dim the background*/
+}

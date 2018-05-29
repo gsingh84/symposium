@@ -4,11 +4,15 @@ $("form").on("submit", function (event) {
     event.preventDefault();
     var data = $('form').serializeArray();
     data.push({name:'submit', value:'clicked'});
-    $.post(window.location, data, function(response){
-        alert(response);
-        var comp_id = response;
-        readFile(comp_id);
-    });
+
+    if($("#fileToUpload").val()) {
+        $.post(window.location, data, function(response){
+            // alert(response);
+            var comp_id = response;
+            readFile(comp_id);
+            success_msg("Competition Created");
+        });
+    }
 
     // $.post("./levels", data, function(response){
     //
@@ -20,7 +24,7 @@ function readFile(comp_id) {
     $.post("./models/readExcel.php",
         {comp_id:comp_id, level_id: $("#select-level").val()},
         function(response){
-            alert(response);
+            // alert(response);
     });
 }
 
@@ -62,4 +66,15 @@ function success() {
     }, 2000);
     $("#message").addClass("text-success text-center");
     $("#message").html("File successfully uploaded");
+}
+
+//success message for adding manual participants
+function success_msg(msg) {
+    setTimeout(function() {
+        $("#overlay").removeClass("overlay h3 p-3 pt-4 ml-5");
+        $("#overlay").html("");
+        window.location.href = "./";
+    }, 2000);
+    $("#overlay").addClass("overlay h3 p-3 pt-4 ml-5");
+    $("#overlay").html(msg + " &#10003;");
 }

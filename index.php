@@ -67,6 +67,8 @@
                     //insert into db
                     $db->insertParticipant($info);
                 }
+
+                unset($_SESSION['participants']);
             }
 
             echo $comp_id; //return newly inserted competition id
@@ -238,6 +240,20 @@
         //render
         $template = new Template();
         echo $template->render('views/manage-participants.html');
+    });
+
+    //add more levels to the competition
+    $f3->route('GET|POST /add-more', function($f3){
+
+        $db = new Database();
+
+        $competitions = $db->getCompetitions();
+
+        $f3->set('competitions', $competitions);
+
+        //render
+        $template = new Template();
+        echo $template->render('views/add-more.html');
     });
 
 

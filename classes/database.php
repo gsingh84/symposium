@@ -71,6 +71,16 @@ class Database extends DbObject
         return $this->update($tableName, $columns, $options, $data);
     }
 
+    function getCompetitions()
+    {
+        $tableName = "competitions";
+        $options = array();
+
+        $result = $this->select($tableName, $options);
+
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     /**
      * Get all participants
      * @return array results
@@ -124,10 +134,44 @@ class Database extends DbObject
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Get criteria by id
+     * @param $id
+     * @return array
+     */
     function getCriteriaByLevelId($id)
     {
         $tableName = "criteria";
         $options = array("level_id" => $id);
+
+        $result = $this->select($tableName, $options);
+
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Get level by id
+     * @param $id
+     * @return array
+     */
+    function getLevelById($id)
+    {
+        $tableName = "levels";
+        $options = array("id" => $id);
+
+        $result = $this->select($tableName, $options);
+
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Get level by id
+     * @return array
+     */
+    function getConnectedLevels()
+    {
+        $tableName = "levels,competitions,judges_levels";
+        $options = array("levels.id" => "level_id", "competitions.id" => "competition_id");
 
         $result = $this->select($tableName, $options);
 
