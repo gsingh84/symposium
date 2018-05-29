@@ -3,11 +3,26 @@
 $("form").on("submit", function (event) {
     event.preventDefault();
     var data = $('form').serializeArray();
-    console.log(data);
-    $.post("./levels", data, function(response){
-
+    data.push({name:'submit', value:'clicked'});
+    $.post(window.location, data, function(response){
+        alert(response);
+        var comp_id = response;
+        readFile(comp_id);
     });
+
+    // $.post("./levels", data, function(response){
+    //
+    // });
 });
+
+//read uploaded excel file
+function readFile(comp_id) {
+    $.post("./models/readExcel.php",
+        {comp_id:comp_id, level_id: $("#select-level").val()},
+        function(response){
+            alert(response);
+    });
+}
 
 //upload file on click
 $("#upload").click(function(evt){
@@ -28,7 +43,7 @@ $("#upload").click(function(evt){
         data: form_data,
         type: 'post',
         success: function(response){
-            alert(response);
+            // alert(response);
             $("#message").removeClass();
             if(response == "success") {
                 success();
@@ -43,7 +58,7 @@ $("#upload").click(function(evt){
 //show success message
 function success() {
     setTimeout(function() {
-        location.reload();
+        // location.reload();
     }, 2000);
     $("#message").addClass("text-success text-center");
     $("#message").html("File successfully uploaded");

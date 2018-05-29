@@ -95,7 +95,7 @@
     //send single input and array of data to php file
     function sendLevelName(input, data) {
         $.post("./levels", {input:input, data:data}, function(response){
-            alert(response);
+            // alert(response);
         });
     }
 
