@@ -11,6 +11,10 @@ body{
     width: auto;
 }
 
+a:link{
+    text-decoration: none;
+}
+
 .nav{
     height: 50px;
     background-color: white;

@@ -5,7 +5,17 @@
     background-color: #27ae60;
 }
 
-#field {
+#first-box {
+    transition-property: all;
+    transition-duration: 0.5s;
+}
+
+#results {
+    transition-property: all;
+    transition-duration: 0.5s;
+}
+
+.field {
     border: 1px solid lightgray;
     padding-top: 10px;
     margin-top: 120px;
@@ -15,4 +25,18 @@
 
 .form-control, #gender {
     background-color: #D5DBDB;
+}
+
+.overlay{
+    transition-property: all;
+    transition-duration: 0.5s;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    top: 50px;
+    left: 20px;
+    width: 80%;
+    height: 20%;
+    z-index: 10;
+    background-color: rgba(0,0,0,0.5); /*dim the background*/
 }

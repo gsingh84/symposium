@@ -50,7 +50,7 @@ body
     background-image: url('../images/search.svg');
     background-repeat: no-repeat;
     background-size: 20px auto;
-    background-position: left;
+    background-position: 8px 8px;
     text-indent: 25px;
 }
 
