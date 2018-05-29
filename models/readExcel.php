@@ -14,46 +14,50 @@
         echo "File not found!";
     }
 
+    if(isset($_POST['comp_id'])) {
+        //array for holding each row
+        $output = array();
 
-    //array for holding each row
-    $output = array();
-
-    //loop over to get file as worksheet
-    foreach ($objPHPExcel->getWorksheetIterator() as $worksheet)
-    {
-
-        $highestRow = $worksheet->getHighestRow();
-        $hCol = $worksheet->getHighestColumn();
-        $nCol = ord(strtolower($hCol)) - 96;
-
-        //get every row
-        for($row=2; $row<=$highestRow; $row++)
+        //loop over to get file as worksheet
+        foreach ($objPHPExcel->getWorksheetIterator() as $worksheet)
         {
-            //get every column
-            for($col=0; $col<=$nCol; $col++)
+
+            $highestRow = $worksheet->getHighestRow();
+            $hCol = $worksheet->getHighestColumn();
+            $nCol = ord(strtolower($hCol)) - 96;
+
+            //get every row
+            for($row=2; $row<=$highestRow; $row++)
             {
-                $data = $worksheet->getCellByColumnAndRow($col, $row)->getValue();
+                //get every column
+                for($col=0; $col<=$nCol; $col++)
+                {
+                    $data = $worksheet->getCellByColumnAndRow($col, $row)->getValue();
 
-                //check the cell is not empty
-                if(!empty($data)) {
-                    //add each row into array
-                    if($col == 0) {
-                        $name = explode(" ", $data);
+                    //check the cell is not empty
+                    if(!empty($data)) {
+                        //add each row into array
+                        if($col == 0) {
+                            $name = explode(" ", $data);
 
-                        if(sizeof($name) == 2) {
-                            array_push($output, $name[0], $name[1]);
-                        } else{
-                            array_push($output, $name[0], $name[sizeof($name) - 1]);
-                        }
-                    } else {
+                            if(sizeof($name) == 2) {
+                                array_push($output, $name[0], $name[1]);
+                            } else{
+                                array_push($output, $name[0], $name[sizeof($name) - 1]);
+                            }
+                        } else {
                             array_push($output, $data);
+                        }
                     }
                 }
-            }
 
-            //insert row into database
-            insertParticipant($output);
-            $output = array();
+                //insert row into database
+                array_push($output, $_POST['comp_id'], $_POST['level_id']);
+                insertParticipant($output);
+                $output = array();
+            }
         }
     }
+
+
 

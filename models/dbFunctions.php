@@ -38,7 +38,8 @@
     function insertParticipant($data) {
 
         //column names
-        $columnsName = array('first_name', 'last_name', 'dob', 'gender');
+        $columnsName = array('first_name', 'last_name', 'dob', 'gender', 'competition_id', 'level_id');
+//        $columnsName = array('first_name', 'last_name', 'dob', 'gender');
         $columns = "";
 
         //loop over to get all columns
@@ -51,7 +52,7 @@
         }
 
         //define query
-        $sql = "INSERT INTO participants($columns) VALUES (:first_name, :last_name, :dob, :gender)";
+        $sql = "INSERT INTO participants($columns) VALUES (:first_name, :last_name, :dob, :gender, :competition_id, :level_id)";
 
         global $dbh;
 

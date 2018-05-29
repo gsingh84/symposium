@@ -24,9 +24,6 @@
      */
     $f3->route('GET|POST /', function ()
     {
-        //testing
-        $database = new Database();
-
         $template = new Template();
         //render
         echo $template->render('views/admin-home.html');
@@ -34,12 +31,47 @@
 
     $f3->route('GET|POST /create', function ($f3)
     {
+        session_start();
+
         //get all levels and judges list
         $db = new Database();
         $levels = $db->getLevels();
         $judges = $db->getJudges();
         $f3->set('levels', $levels);
         $f3->set('judges', $judges);
+
+        //form submitted?
+        if(isset($_POST['submit'])) {
+            //insert competition
+            $comp_id = $db->insertCompetition(array($_POST['comp-name']));
+            $level_id = $_POST['selected-level'];
+
+            //insert selected judges
+            foreach ($_POST['judges'] as $judge_id) {
+                $db->insertJudge_level_comp_ids(array($judge_id, $level_id, $comp_id));
+            }
+
+            //insert manually added participants
+            if(isset($_SESSION['participants'])) {
+                $details = $_SESSION['participants'];
+
+                //get each line from array
+                foreach ($details as $line) {
+                    $parts = explode("|", $line);
+
+                    $info = array();
+                    foreach ($parts as $item) {
+                        array_push($info, $item);
+                    }
+                    array_push($info, $comp_id, $level_id);
+                    //insert into db
+                    $db->insertParticipant($info);
+                }
+            }
+
+            echo $comp_id; //return newly inserted competition id
+            return;
+        }
 
         $template = new Template();
         //render
@@ -48,6 +80,16 @@
 
     $f3->route('GET|POST /add-participant', function ()
     {
+        session_start();
+
+        //check received data request from add-participant.js file
+        if(isset($_POST['data'])) {
+            unset($_SESSION['participants']);
+            //hold data in session before adding into the database
+            $_SESSION['participants'] = $_POST['data'];
+            return;
+        }
+
         $template = new Template();
         //render
         echo $template->render('views/add-participant.html');
@@ -157,22 +199,45 @@
     //manage judges
     $f3->route('GET|POST /judges', function ($f3)
     {
-        $judges = getAllRows("judges");
+        //get judges from database
+        $db = new Database();
+        $judges = $db->getJudges();
 
         $f3->set('judges', $judges);
-        $template = new Template();
 
         if ($_POST['delete-judge'] > 0) {
-            deleteJudge($_POST['delete-judge']);
+            deleteJudge($_POST['delete-judge']); //write delete function in database class
         }
 
         if (!empty($_POST['insert-judge'])) {
-            insertJudge($_POST['insert-judge']);
+            $db->insertJudge(array($_POST['insert-judge']));
         }
 
         //render
+        $template = new Template();
         echo $template->render('views/judges.html');
 
+    });
+
+    //manage participants
+    $f3->route('GET|POST /participants', function($f3){
+        //get all participants
+        $db = new Database();
+        $f3->set('participants', $db->getParticipants());
+
+        if(isset($_POST['p-id'])) {
+            $pid = $_POST['p-id'];
+            unset($_POST['p-id']);
+            $db->updateParticipant($_POST, $pid);
+            return;
+        } else if(isset($_POST['del_id'])) {
+            $db->deleteParticipant($_POST['del_id']);
+            return;
+        }
+
+        //render
+        $template = new Template();
+        echo $template->render('views/manage-participants.html');
     });
 
 
