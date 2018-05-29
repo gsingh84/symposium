@@ -12,6 +12,20 @@ class Database extends DbObject
 //    protected $participants_cols = array('first_name', 'last_name', 'dob', 'gender');
 
     /**
+     * Update participant's information
+     * @param $data
+     * @param $id
+     * @return bool
+     */
+    function updateParticipant($data, $id) {
+        $tableName = "participants";
+        $options = array("id" => $id);
+        $columns = array("first_name", "last_name", "dob", "gender", "competition_id", "level_id");
+
+        return $this->update($tableName, $columns, $options, $data);
+    }
+
+    /**
      * Update competition name
      * @param $data
      * @param $id
@@ -133,6 +147,14 @@ class Database extends DbObject
         return $this->insert($tableName, $columns, $data);
     }
 
+    function insertJudge_level_comp_ids($data)
+    {
+        $tableName = "judges_levels";
+        $columns = array("judge_id", "level_id", "competition_id");
+
+        return $this->insert($tableName, $columns, $data);
+    }
+
     /**
      * Insert participants details
      * @param $data
@@ -250,5 +272,18 @@ class Database extends DbObject
         $data = array($judge_id, $level_id, $competition_id);
 
         return $this->insert($tableName, $columns, $data);
+    }
+
+    /**
+     * Delete participant from participants table
+     * @param $id
+     * @return bool
+     */
+    function deleteParticipant($id) {
+
+        $tblName = 'participants';
+        $options = array('id' => $id);
+
+        return $this->delete($tblName, $options);
     }
 }

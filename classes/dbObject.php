@@ -155,4 +155,39 @@ class DbObject
         //return last inserted id
         return $this->dbh->lastInsertId();
     }
+
+    /**
+     * Delete entry from database table
+     * @param $tableName
+     * @param $options
+     * @return bool
+     */
+    public function delete($tableName, $options)
+    {
+        if(empty($tableName))
+            die("Method " . __METHOD__ . ": parameters error.");
+
+        //Concat the options for select query
+        foreach ($options as $key => $value) {
+            $whereConditions = $key . '=:' . $key . ' AND ';
+        }
+        $whereConditions = empty($whereConditions) ? '' : ' WHERE ' . rtrim($whereConditions, ' AND ');
+
+        //Define the query
+        $sql = "DELETE FROM {$tableName} {$whereConditions}";
+
+        //Prepare the statement
+        $statement = $this->dbh->prepare($sql);
+
+        //Bind parameters
+        foreach ($options as $key => &$value) {
+            $statement->bindParam(':'.$key, $value);
+        }
+
+        //Execute the query
+        $result = $statement->execute();
+
+        //Return the results
+        return $result;
+    }
 }
