@@ -61,7 +61,9 @@
         <div class="col">
             <div class="form-group row">
                 <div class="col-md-6 offset-md-3 mt-2">
-                    <input name="comp-name" type="text" class="form-control font-weight-light border border-primary" placeholder="Enter name of the competition">
+                    <check if="{{ !isset(@params['comp_id']) }}">
+                        <input name="comp-name" type="text" class="form-control font-weight-light border border-primary" placeholder="Enter name of the competition">
+                    </check>
                 </div>
             </div> <!--competition name-->
 

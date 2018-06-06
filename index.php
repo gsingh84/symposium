@@ -221,18 +221,29 @@
 
     });
 
-    //manage participants
-    $f3->route('GET|POST /participants', function($f3){
-        //get all participants
-        $db = new Database();
-        $f3->set('participants', $db->getParticipants());
+    //manage competitions
+    $f3->route('GET|POST /competitions/@comp_id', function($f3, $params){
 
+        $f3->set("params", $params);
+        //render
+        $template = new Template();
+        echo $template->render('views/create-comp.html');
+    });
+
+    //manage participants
+    $f3->route('GET|POST /participants/@comp_id/@level_id', function($f3, $params){
+        //get all participants by levels and competitions
+        $db = new Database();
+        $f3->set('participants', $db->getParticipantByLevelAndComp($params['comp_id'], $params['level_id']));
+
+        //update participant name
         if(isset($_POST['p-id'])) {
             $pid = $_POST['p-id'];
             unset($_POST['p-id']);
             $db->updateParticipant($_POST, $pid);
             return;
-        } else if(isset($_POST['del_id'])) {
+        } //delete participant name
+        else if(isset($_POST['del_id'])) {
             $db->deleteParticipant($_POST['del_id']);
             return;
         }
@@ -243,11 +254,13 @@
     });
 
     //add more levels to the competition
-    $f3->route('GET|POST /add-more', function($f3){
+    $f3->route('GET|POST /competitions', function($f3){
 
-        $db = new Database();
+        $competitions = selectJoin();
 
-        $competitions = $db->getCompetitions();
+//        $db = new Database();
+//
+//        $competitions = $db->getCompetitions();
 
         $f3->set('competitions', $competitions);
 
