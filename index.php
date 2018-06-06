@@ -7,7 +7,7 @@
     //Require the files (fat-free)
     require_once('vendor/autoload.php');
 
-    require_once '/home/gsinghgr/config.php';
+    require_once '/home/asinghgr/config.php';
     require_once "models/dbFunctions.php";
 
     //Create an instance of the Base Class
@@ -99,56 +99,153 @@
 
     $f3->route('GET|POST /judge', function ($f3)
     {
-        session_start();
         $participants = getAllRows("participants");
         $scores = getAllRows("scores");
 
         $f3->set('participants', $participants);
         $f3->set('scores', $scores);
+        if (isset($_POST["submit"]))
+        {
+            session_start();
 
+            $username = $_POST["username"];
+            $password = $_POST["password"];
+
+            $id = getJudgeId($username);
+            $judgeid = $id['id'];
+            $competitions = getAllCompetitions($judgeid);
+
+    //            print_r($competitions);
+            $_SESSION["competitions"] = $competitions;
+
+            $location = "Location: http://asingh.greenriverdev.com/355/symposium/judge/".$judgeid;
+            header($location);
+        }
         $template = new Template();
 
+        //render
+        echo $template->render('views/judgeLog.html');
+    });
+
+
+    $f3->route('GET|POST /judge/@judgeid', function ($f3,$params)
+    {
+        session_start();
+        $competitions = $_SESSION["competitions"];
+
+        $competitionArray = array();
+
+        $id = $params['judgeid'];
+        $f3->set('judgeid', $id);
+
+
+
+        foreach($competitions as $comp => $item)
+        {
+            array_push($competitionArray, $item["competition_name"]);
+        }
+
+        $f3->set('competitions', $competitionArray);
+
+        $template = new Template();
+        //render
+        echo $template->render('views/competitions.html');
+    });
+
+
+    $f3->route('GET|POST /judge/@judgeid/@level', function ($f3,$params)
+    {
+        $level = $params['level'];
+        $f3->set('level', $level);
+
+        $compId = getCommpid($level);
+        $compId = $compId["id"];
+
+        $levels = getAllLevels($compId);
+
+        $compLevelsArray  = array();
+        foreach($levels as $lev => $item)
+        {
+            array_push($compLevelsArray, $item["level"]);
+        }
+
+//        print_r($levels);
+        $f3->set('compLevels', $levels);
+        $template = new Template();
+        //render
+        echo $template->render('views/judgeLevel.html');
+    });
+
+    $f3->route('GET|POST /participant/@level', function ($f3,$params)
+    {
+        $level = $params['level'];
+
+        $levelId = getLevelid($level);
+        $levelId = $levelId['id'];
+
+        $participants = getParticipants($levelId);
+
+        $f3->set('participants',$participants);
+
+        $template = new Template();
         //render
         echo $template->render('views/judge.html');
     });
 
-    $f3->route('GET|POST /judge/@id', function ($f3,$params)
+    $f3->route('GET|POST /score/@pid', function ($f3,$params)
     {
-        $id = $params['id'];
+        $level = $params['pid'];
 
-        $participants = getParticipant($id);
+//        echo $level;
 
-        $f3->set('participants', $participants);
+        $participant = getParticipant($level);
+        $f3->set('participant',$participant);
 
-        if (isset($_POST["submit"]))
-        {
-            session_start();
-            $q1 = $_POST["question-1"];
-            $q2 = $_POST["question-2"];
-            $q3 = $_POST["question-3"];
-
-            $delivery = $_POST["delivery"];
-            $eyeContact = $_POST["eye-contact"];
-            $voice = $_POST["voice"];
-            $language = $_POST["language"];
-            $effectiveness = $_POST["effectiveness"];
-
-            $total = $q1 + $q3 + $q2 + $delivery + $eyeContact + $voice + $language + $effectiveness;
-
-
-            $result = insertScores($id,$total);
-
-            if ($result)
-            {
-                $_SESSION["score"] = $total;
-                header("Location: http://fastweb.greenriverdev.com/355/symposium/judge");
-            }
-        }
+//        print_r($participant);
 
         $template = new Template();
         //render
         echo $template->render('views/participant.html');
     });
+
+
+    //    $f3->route('GET|POST /judge/@id', function ($f3,$params)
+    //    {
+    //        $id = $params['id'];
+    //
+    //        $participants = getParticipant($id);
+    //
+    //        $f3->set('participants', $participants);
+    //
+    //        if (isset($_POST["submit"]))
+    //        {
+    //            $q1 = $_POST["question-1"];
+    //            $q2 = $_POST["question-2"];
+    //            $q3 = $_POST["question-3"];
+    //
+    //            $delivery = $_POST["delivery"];
+    //            $eyeContact = $_POST["eye-contact"];
+    //            $voice = $_POST["voice"];
+    //            $language = $_POST["language"];
+    //            $effectiveness = $_POST["effectiveness"];
+    //
+    //            $total = $q1 + $q3 + $q2 + $delivery + $eyeContact + $voice + $language + $effectiveness;
+    //
+    //
+    //            $result = insertScores($id,$total);
+    //
+    //            if ($result)
+    //            {
+    //                $_SESSION["score"] = $total;
+    //                header("Location: http://fastweb.greenriverdev.com/355/symposium/judge");
+    //            }
+    //        }
+    //
+    //        $template = new Template();
+    //        //render
+    //        echo $template->render('views/participant.html');
+    //    });
+
 
     //manage levels
     $f3->route('GET|POST /levels', function ($f3)

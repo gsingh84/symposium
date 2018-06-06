@@ -1,7 +1,7 @@
 <?php
 
 //    require_once '/home2/fastwebg/symposiumConfig.php';
-    require_once '/home/gsinghgr/config.php';
+    require_once '/home/asinghgr/config.php';
 
 
 
@@ -246,8 +246,182 @@
 
         //return data
         return $result;
+    }
+
+
+    /**
+     * get participants with same level
+     *
+     * @return participants
+     */
+
+    function getParticipants($id) {
+
+        //get all rows from db
+        $sql = "SELECT * FROM participants WHERE level_id = :id ";
+
+        global $dbh;
+
+        //prepare statement
+        $statement = $dbh->prepare($sql);
+
+        //bind params
+        $statement->bindParam(':id',$id, PDO::PARAM_INT);
+
+        //execute statement
+        $statement->execute();
+
+        //fetch all rows
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        //return data
+        return $result;
 
     }
+
+    /**
+     * get judge id on log in
+     *
+     * @return selected judge id
+     */
+
+    function getJudgeId($username) {
+
+        //get all rows from db
+        $sql = "SELECT id FROM judges WHERE username = :username ";
+
+        global $dbh;
+
+        //prepare statement
+        $statement = $dbh->prepare($sql);
+
+        //bind params
+        $statement->bindParam(':username',$username, PDO::PARAM_INT);
+
+        //execute statement
+        $statement->execute();
+
+        //fetch all rows
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        //return data
+        return $result;
+    }
+
+    /**
+     * get all the competitions for the judge
+     *
+     * @return all the competitions for the judge
+     */
+
+    function getAllCompetitions($id) {
+
+        //get all rows from db
+        $sql = "SELECT DISTINCT competitions.competition_name FROM judges, competitions, judges_levels WHERE judges.id = :id";
+
+        global $dbh;
+
+        //prepare statement
+        $statement = $dbh->prepare($sql);
+
+        //bind params
+        $statement->bindParam(':id',$id, PDO::PARAM_INT);
+
+        //execute statement
+        $statement->execute();
+
+        //fetch all rows
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        //return data
+        return $result;
+    }
+    /**
+     * get all the levels for the judge
+     *
+     * @return all the levels for the judge
+     */
+
+    function getAllLevels($compid) {
+
+        //get all rows from db
+        $sql = "SELECT DISTINCT levels.level, levels.active FROM levels, judges_levels WHERE level_id = levels.id AND competition_id = :compid";
+
+        global $dbh;
+
+        //prepare statement
+        $statement = $dbh->prepare($sql);
+
+        //bind params
+        $statement->bindParam(':compid',$compid, PDO::PARAM_INT);
+
+        //execute statement
+        $statement->execute();
+
+        //fetch all rows
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        //return data
+        return $result;
+    }
+
+    /**
+     * get comp id on
+     *
+     * @return selected comp id
+     */
+
+    function getCommpid($compname) {
+
+        //get all rows from db
+        $sql = "SELECT id FROM competitions WHERE competition_name = :compname ";
+
+        global $dbh;
+
+        //prepare statement
+        $statement = $dbh->prepare($sql);
+
+        //bind params
+        $statement->bindParam(':compname',$compname, PDO::PARAM_INT);
+
+        //execute statement
+        $statement->execute();
+
+        //fetch all rows
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        //return data
+        return $result;
+    }
+    /**
+     * get level id on
+     *
+     * @return level comp id
+     */
+
+    function getLevelid($levelName) {
+
+        //get all rows from db
+        $sql = "SELECT id FROM levels WHERE level = :levelName ";
+
+        global $dbh;
+
+        //prepare statement
+        $statement = $dbh->prepare($sql);
+
+        //bind params
+        $statement->bindParam(':levelName',$levelName, PDO::PARAM_INT);
+
+        //execute statement
+        $statement->execute();
+
+        //fetch all rows
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        //return data
+        return $result;
+    }
+
 
     // Insert judges
     function insertJudge($name){

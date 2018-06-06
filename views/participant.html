@@ -12,11 +12,17 @@
 </head>
 <body>
 <div class="">
+    <nav class="navbar navbar-toggleable-sm bg-light py-0 text-black welcome">
+        <a class="navbar-brand"><img height="40vh" width="50vw" src="/355/symposium/views/images/judge.png"> <strong></strong> </a>
+        <form class="form-inline">
+            <a class="nav-item nav-link" href="" style="border-left: 1px solid rgb(204,204,255)">Sign Out</a>
+        </form>
+    </nav>
     <div id="search-bg"></div>
-    <div class="container mt-0 tablecon">
+    <div class="container mt-5 tablecon">
         <div class="row">
             <div class="col-md-8 offset-md-2">
-                <input placeholder="Name" id="search-box" type="text" name="keyword" autofocus>
+                <!--<input placeholder="Name" id="search-box" type="text" name="keyword" autofocus>-->
             </div>
         </div> <!--search bar-->
     </div>
@@ -37,12 +43,12 @@
                     <img src="http://fastweb.greenriverdev.com/355/symposium/views/images/imgg.png" class="img-fluid">
                 </div>
                 <div class="col-md-12 mt-5 pl-0 pr-0">
-                    <label class="col border"> First Name: {{@participants['first_name']}}</label>
-                    <label class="col border"> Last Name: {{@participants['last_name']}}</label>
+                    <label class="col border"> First Name: {{@participant['first_name']}}</label>
+                    <label class="col border"> Last Name: {{@participant['last_name']}}</label>
                     <label class="col border"> Parents Name: Name</label>
-                    <label class="col border"> Age: {{@participants['dob']}}</label>
+                    <label class="col border"> Age: {{@participant['dob']}}</label>
                     <label class="col border"> Level: level</label>
-                    <label class="col border"> Gender: {{@participants['gender']}}</label>
+                    <label class="col border"> Gender: {{@participant['gender']}}</label>
                 </div>
             </div>
             <div class="col-md-9 bg-light rounded">
@@ -163,8 +169,7 @@
 
     $("#submit").click(function () {
 
-        location.href = "http://fastweb.greenriverdev.com/355/symposium/judge";
-
+        location.href = "http://asingh.greenriverdev.com/355/symposium/participant";
     });
 </script>
 
