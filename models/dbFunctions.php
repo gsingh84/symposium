@@ -337,13 +337,17 @@
         INNER JOIN competitions ON judges_levels.competition_id = competitions.id GROUP BY competitions.id";
 
         global $dbh;
+
         //prepare statement
         $statement = $dbh->prepare($sql);
 
         //execute statement
         $statement->execute();
+
         //fetch all rows
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
         //return data
         return $result;
     }
+
