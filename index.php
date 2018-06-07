@@ -8,7 +8,7 @@
     require_once('vendor/autoload.php');
 
     require_once '/home/gsinghgr/config.php';
-    require_once "models/dbFunctions.php";
+//    require_once "models/dbFunctions.php";
 
     //Create an instance of the Base Class
     $f3 = Base :: instance();
@@ -99,7 +99,7 @@
 
     $f3->route('GET|POST /judge', function ($f3)
     {
-        session_start();
+//        session_start();
         $participants = getAllRows("participants");
         $scores = getAllRows("scores");
 
@@ -256,11 +256,8 @@
     //add more levels to the competition
     $f3->route('GET|POST /competitions', function($f3){
 
+        //get competitions and levels
         $competitions = selectJoin();
-
-//        $db = new Database();
-//
-//        $competitions = $db->getCompetitions();
 
         $f3->set('competitions', $competitions);
 

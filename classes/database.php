@@ -99,13 +99,13 @@ class Database extends DbObject
      * Get participant by id
      * @return array results
      */
-    function getParticipantById($id)
+    function getParticipantByLevelAndComp($comp_id, $level_id)
     {
         $tableName = "participants";
-        $options = array("id" => $id);
+        $options = array("competition_id" => $comp_id, "level_id" => $level_id);
 
         $result = $this->select($tableName, $options);
-        return $result->fetch(PDO::FETCH_ASSOC);
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
