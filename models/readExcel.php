@@ -1,4 +1,5 @@
 <?php
+    session_start();
     //set error reporting
     error_reporting(E_ALL);
     ini_set('error_reporting', E_ALL);
@@ -51,13 +52,20 @@
                     }
                 }
 
-                //insert row into database
-                array_push($output, $_POST['comp_id'], $_POST['level_id']);
-                insertParticipant($output);
-                $output = array();
+                //add values in the array for showing read data on user side
+                if ($_POST['comp_id'] < 0) {
+                    array_push($output, "||");
+                } else {
+                    //insert row into database
+                    array_push($output, $_POST['comp_id'], $_POST['level_id']);
+                    insertParticipant($output);
+                    $output = array();
+                }
             }
         }
     }
+
+    echo json_encode($output);
 
 
 

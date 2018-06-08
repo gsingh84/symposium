@@ -85,23 +85,23 @@
                 <repeat group="{{ @participants }}" value="{{ @participant }}">
                     <div id="display-{{@participant['id']}}" class="tile">
                         <div class="form-group row m-0 mb-1 border border-info p-2 bg-white">
-                            <div class="col-2">
+                            <div class="col-md-2">
                                 <small class="text-muted">First name:</small><br>
                                 {{ @participant['first_name'] }}
                             </div>
-                            <div class="col-2">
+                            <div class="col-md-2">
                                 <small class="text-muted">Last name:</small><br>
                                 {{ @participant['last_name'] }}
                             </div>
-                            <div class="col-3">
+                            <div class="col-md-3">
                                 <small class="text-muted">Birth date:</small><br>
                                 {{ @participant['dob'] }}
                             </div>
-                            <div class="col-2">
+                            <div class="col-md-2">
                                 <small class="text-muted">Gender:</small><br>
                                 {{ @participant['gender'] }}
                             </div>
-                            <div class="col-3 text-right">
+                            <div class="col-md-3 text-right">
                                 <button id="delete-{{@participant['id']}}" class="btn-sm btn-outline-danger rounded-0 mt-2 del-btn">Delete</button>
                                 <button id="edit-{{@participant['id']}}" class="btn-sm btn-outline-primary rounded-0 mt-2 edit-btn">Edit</button>
                             </div>
@@ -111,23 +111,23 @@
                     <form id="form-{{@participant['id']}}" method="post" action="">
                     <div id="input-{{@participant['id']}}" class="edit">
                         <div class="form-group row mb-1 border border-info p-2 pl-0 bg-white">
-                            <div class="col-3">
+                            <div class="col-md-3">
                                 <small class="text-muted">First name:</small><br>
                                 <input name="first_name" type="text" class="form-control font-weight-light" value="{{ @participant['first_name'] }}">
                             </div>
-                            <div class="col-2">
+                            <div class="col-md-2">
                                 <small class="text-muted">Last name:</small><br>
                                 <input name="last_name" type="text" class="form-control font-weight-light" value="{{ @participant['last_name'] }}">
                             </div>
-                            <div class="col-3">
+                            <div class="col-md-3">
                                 <small class="text-muted">Birth date:</small><br>
                                 <input name="dob" type="text" class="form-control font-weight-light" value="{{ @participant['dob'] }}">
                             </div>
-                            <div class="col-2">
+                            <div class="col-md-2">
                                 <small class="text-muted">Gender:</small><br>
                                 <input name="gender" type="text" class="form-control font-weight-light" value="{{ @participant['gender'] }}">
                             </div>
-                            <div class="col-2 text-right">
+                            <div class="col-md-2 text-right">
                                 <button id="update-{{@participant['id']}}" type="button" class="btn btn-success mt-3 rounded-0 update-btn">Update</button>
                             </div>
                         </div>

@@ -1,22 +1,7 @@
 
     //hide add level field initially
-    $("#add-level").hide();
-    $("#criteria-text").hide();
+    $("#remove-text").hide();
     $("#add-rm-block").hide();
-
-    //display add level field on add btn click
-    $("#add-btn").click(function () {
-        $("#display-level").slideUp("fast");
-        $("#add-level").slideDown("fast");
-
-        //change go back icon href attribute
-        $("#go-back").attr("href", "./levels");
-    });
-
-    //create criteria type input on click
-    $("#add-criteria-btn").click(function() {
-        $("#criteria-text").show(150);
-    });
 
     var levelId = 0;
     var criterias = [];
@@ -24,6 +9,7 @@
     $("#confirm").click(function(){
         var val = $("#cret-type").val();
         if(val.length > 0) {
+            $("#remove-text").slideDown("fast");
             criterias.push(val);
             levelId++;
             $("#added").append("<div id='level-id"+levelId+"' class='row m-0 pt-1 border border-secondary p-1'>\n" +
@@ -58,6 +44,7 @@
         $("#level-name").val('')
         $("#added").html('');
         criterias = [];
+        window.location = "./create";
     });
 
     //disable level

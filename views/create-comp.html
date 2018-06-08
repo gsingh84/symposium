@@ -6,16 +6,19 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
     <link rel="stylesheet" href="{{@BASE}}/views/styles/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Create Competition</title>
+
+    <style>
+
+    </style>
 </head>
 <body>
+<div id="overlay" class="text-white font-weight-light text-center"></div><!--success message-->
+
 <nav class="navbar navbar-inverse navbar-toggleable nav">
     <div id="icon-bar" class="navbar-nav row">
         <a style="margin-left: 5px;" class="navbar-brand" href="{{@BASE}}"> <img id="brand-icon" src="{{@BASE}}/views/images/admin.svg"> <span id="brand-head">Admin</span></a>
-    </div>
-
-    <div class="navbar-nav ml-md-auto">
-        <a class="nav-item nav-link item" href="" style="padding-right: 20px;">Check Ranking</a>
     </div>
 
     <div id="myContent">
@@ -26,12 +29,12 @@
 </nav><!-- nav bar -->
 
 <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog modal-lg">
 
         <div class="modal-content rounded-0">
             <div style="background-color: white; border-bottom: 3px solid #EDBB99;" class="modal-header rounded-0">
                 <h5 class="modal-title font-weight-light mt-0" id="exampleModalLabel">Import File: <small class="text-muted font-weight-light">.xls, .xlsx<a href="{{@BASE}}/models/reader/data.xlsx">(Sample format here)</a></small></h5>
-                <button type="button" class="close font-weight-light" data-dismiss="modal" aria-label="Close">
+                <button id="close-modal" type="button" class="close font-weight-light" data-dismiss="modal" aria-label="Close">
                     X
                 </button>
             </div> <!--modal header-->
@@ -49,6 +52,34 @@
                 <div class="row text-center ml-0">
                     <span id="message"></span>
                 </div>
+                <hr>
+                <div id="list-head" class="row mb-1">
+                    <div class="col-md-6">
+                        <p class="h4 font-weight-light">Participants</p>
+                    </div>
+                    <div class="col-md-3">
+                        <button id="cancel-import" class="btn btn-block btn-warning">Cancel</button>
+                    </div>
+                    <div class="col-md-3">
+                        <button id="import" class="btn btn-block btn-primary">Add All</button>
+                    </div>
+                </div>
+                <div id="display-list">
+                    <!--<div class="form-group row">-->
+                        <!--<div class="col-md-3">-->
+                            <!--<label><small>Name:</small></label>-->
+
+                        <!--</div>-->
+                        <!--<div class="col-md-3">-->
+                            <!--<label><small>Birth Date:</small></label>-->
+
+                        <!--</div>-->
+                        <!--<div class="col-md-3">-->
+                            <!--<label><small>Gender:</small></label>-->
+
+                        <!--</div>-->
+                    <!--</div>-->
+                </div>
             </div>
             <!--</form>-->
         </div>
@@ -61,15 +92,14 @@
         <div class="col">
             <div class="form-group row">
                 <div class="col-md-6 offset-md-3 mt-2">
-                    <check if="{{ !isset(@params['comp_id']) }}">
-                        <input name="comp-name" type="text" class="form-control font-weight-light border border-primary" placeholder="Enter name of the competition">
+                    <check if="{{ !isset(@GET['addMore']) }}">
+                        <input name="comp-name" type="text" class="form-control font-weight-light border border-primary" value="{{@$_SESSION['form']['comp-name']}}" placeholder="Enter name of the competition">
                     </check>
                 </div>
             </div> <!--competition name-->
 
             <div class="row">
                 <div class="col-md-6 offset-md-3">
-                    <div id="overlay" class="text-white font-weight-light text-center"></div> <!--Success message append here-->
                     <div class="box mt-0 bg-white">
                         <div class="inner-box">
                             <div class="form-group row">
@@ -79,7 +109,9 @@
                                         <option value="none">--Select Level--</option>
                                         <repeat group="{{ @levels }}" value="{{ @level }}">
                                             <check if="{{ @level['active'] == 1}}">
-                                                <option value="{{@level['id']}}">{{@level['level']}}</option>
+                                                <option value="{{@level['id']}}"
+                                                    <check if="@$_SESSION['form']['selected-level'] == @level['id']">selected</check> >{{@level['level']}}
+                                                </option>
                                             </check>
                                         </repeat>
                                     </select>
@@ -87,8 +119,10 @@
                             </div>
 
                             <div class="row">
+
                                 <div class="col text-right">
-                                    <a href="{{@BASE}}/levels"><button type="button" class="btn btn-sm btn-outline-primary rounded-0">Manage Levels</button></a>
+                                    <a href="{{@BASE}}/levels?addLevel=yes"><button type="button" class="btn btn-sm btn-outline-success rounded-0 next-page"><i class="fa fa-external-link-square"></i> Add Level</button></a>
+                                    <a href="{{@BASE}}/levels"><button id="manage-level" type="button" class="btn btn-sm btn-outline-primary rounded-0 next-page"><i class="fa fa-external-link"></i> Manage Levels</button></a>
                                 </div>
                             </div> <!--select levels-->
 
@@ -101,7 +135,10 @@
                                             <div class="col-md-4">
                                                 <div class="form-check form-check-inline">
                                                     <label class="form-check-label">
-                                                        <input name="judges[]" class="form-check-input" type="checkbox" value="{{@judge['id']}}"> {{@judge['judge_name']}}
+                                                        <input name="judges[]" class="form-check-input" type="checkbox" value="{{@judge['id']}}"
+                                                        <repeat group="{{@$_SESSION['form']['judges']}}" value="@selected">
+                                                            <check if="@judge['id'] == @selected">checked</check>
+                                                        </repeat>> {{@judge['judge_name']}}
                                                     </label>
                                                 </div>
                                             </div>
@@ -112,24 +149,24 @@
 
                             <div class="form-group row">
                                 <div class="col text-right">
-                                    <a href="{{@BASE}}/judges"><button type="button" class="btn btn-sm btn-outline-primary rounded-0">Manage Judges</button></a>
+                                    <a href="{{@BASE}}/judges"><button type="button" class="btn btn-sm btn-outline-primary rounded-0 next-page"><i class="fa fa-external-link"></i> Manage Judges</button></a>
                                 </div>
                             </div> <!--select judges-->
 
                             <div class="form-group row">
                                 <div class="col">
-                                    <button type="button" class="btn btn-primary btn-block font-weight-light" data-toggle="modal" data-target=".bd-example-modal-sm">+ Add participants from excel</button>
-                                </div>
-                            </div> <!--import participant-->
-                            <div class="form-group row">
-                                <div class="col">
-                                    <a href="{{@BASE}}/add-participant"><button type="button" class="btn btn-warning btn-block font-weight-light">Add participant manually</button></a>
+                                    <a href="{{@BASE}}/add-participant"><button type="button" class="btn btn-success btn-block font-weight-light next-page"><i class="fa fa-group"></i> Add participants manually</button></a>
                                 </div>
                             </div> <!--add participant manually-->
+                            <div class="form-group row">
+                                <div class="col">
+                                    <button type="button" class="btn btn-success btn-block font-weight-light" data-toggle="modal" data-target=".bd-example-modal-sm"><i class="fa fa-file-excel-o"></i> Add participants from excel</button>
+                                </div>
+                            </div> <!--import participant-->
                                 <hr>
                             <div class="form-group row mt-4">
                                 <div class="col text-right">
-                                    <button type="submit" id="create" class="btn btn-outline-success btn-block font-weight-bold">Create</button>
+                                    <button type="submit" id="create" class="btn btn-outline-primary btn-block font-weight-bold">Create</button>
                                 </div>
                             </div>
                         </div>

@@ -22,12 +22,35 @@
      ******* Initial route *******
      *************************************************************************
      */
-    $f3->route('GET|POST /', function ()
-    {
-        $template = new Template();
+
+    //list of all competitions
+    $f3->route('GET|POST /', function($f3){
+
+        session_start();
+        session_unset();
+
+        //get competitions and levels
+        $competitions = selectJoin();
+
+        $f3->set('competitions', $competitions);
+
         //render
-        echo $template->render('views/admin-home.html');
+        $template = new Template();
+        echo $template->render('views/add-more.html');
     });
+
+//    $f3->route('GET|POST /', function ()
+//    {
+//        session_start();
+//
+//        session_unset();
+//        $template = new Template();
+//        //render
+//        echo $template->render('views/admin-home.html');
+//    });
+
+
+
 
     $f3->route('GET|POST /create', function ($f3)
     {
@@ -39,6 +62,10 @@
         $judges = $db->getJudges();
         $f3->set('levels', $levels);
         $f3->set('judges', $judges);
+
+        if (isset($_POST['next'])) {
+            $_SESSION['form'] = $_POST;
+        }
 
         //form submitted?
         if(isset($_POST['submit'])) {
@@ -117,10 +144,11 @@
             $judgeid = $id['id'];
             $competitions = getAllCompetitions($judgeid);
 
-    //            print_r($competitions);
             $_SESSION["competitions"] = $competitions;
 
             $location = "Location: http://asingh.greenriverdev.com/355/symposium/judge/".$judgeid;
+//            $location = "/judge/".$judgeid;
+//            $f3->reroute($location);
             header($location);
         }
 
@@ -316,15 +344,6 @@
 
     });
 
-    //manage competitions
-    $f3->route('GET|POST /competitions/@comp_id', function($f3, $params){
-
-        $f3->set("params", $params);
-        //render
-        $template = new Template();
-        echo $template->render('views/create-comp.html');
-    });
-
     //manage participants
     $f3->route('GET|POST /participants/@comp_id/@level_id', function($f3, $params){
         //get all participants by levels and competitions
@@ -346,19 +365,6 @@
         //render
         $template = new Template();
         echo $template->render('views/manage-participants.html');
-    });
-
-    //add more levels to the competition
-    $f3->route('GET|POST /competitions', function($f3){
-
-        //get competitions and levels
-        $competitions = selectJoin();
-
-        $f3->set('competitions', $competitions);
-
-        //render
-        $template = new Template();
-        echo $template->render('views/add-more.html');
     });
 
 

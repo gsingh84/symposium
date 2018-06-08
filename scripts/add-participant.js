@@ -13,7 +13,7 @@
         var last = $("#last_name").val();
         var name = first + ' ' + last;
         var dob = $("#dob").val();
-        var gender = $("#gender").val();
+        var gender = $('#gender').val();
 
         //adjust styles
         $("#first-box").removeClass("offset-md-3");
@@ -90,9 +90,10 @@
     //success message for adding manual participants
     function success_msg() {
         setTimeout(function() {
-            $("#overlay").removeClass("overlay h4 p-3 ml-5");
+            $("#overlay").removeClass("overlay h4 p-3 ml-4");
             $("#overlay").html("");
+            window.location = "./create";
         }, 2000);
-        $("#overlay").addClass("overlay h4 p-3 ml-5");
+        $("#overlay").addClass("overlay h4 p-3 ml-4");
         $("#overlay").html("Participants Added &#10003;");
     }

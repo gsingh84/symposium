@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{@BASE}}/views/styles/levels.css">
     <title>Manage Levels</title>
 </head>
+
 <body>
 <div class="container">
     <div class="row">
@@ -25,82 +26,78 @@
                 <hr>
 
                 <div class="inner-box">
-                    <div id="display-level">
-                        <div class="form-group row">
-                            <div class="col text-right">
-                                <button id="add-btn" name="add-btn" class="btn-sm btn-success rounded-0">&#43;Add Level</button>
-                            </div>
-                        </div>
 
-                        <repeat group="{{ @levels }}" value="{{ @level }}">
-                            <check if="{{ @level['active'] == 1}}">
-                                <true>
-                                    <a class="level-link" href="{{@BASE}}/levels/{{ @level['id']}}"><div  class="level-block form-group row m-0 border border-secondary p-2 pt-3 mb-2">
-                                        <div class="col-6">
-                                            <p class="h5 font-weight-light">{{@level['level']}}</p>
-                                        </div>
-                                        <div class="col-6 text-right">
-                                            <button id="disable-{{ @level['id']}}" class="btn-sm rounded-0 btn-outline-danger">Disable</button>
-                                        </div>
-                                    </div></a>
-                                </true>
-
-                                <false>
-                                    <a class="level-link" href="{{@BASE}}/levels/{{ @level['id']}}"><div class="level-block form-group row m-0 border border-mute p-2 pt-3 mb-2">
-                                        <div class="col-6">
-                                            <p class="h5 font-weight-light text-muted">{{@level['level']}}</p>
-                                        </div>
-                                        <div class="col-6 text-right text-muted">
-                                            <button id="enable-{{ @level['id']}}" class="btn-sm rounded-0 btn-outline-success">Enable</button>
-                                        </div>
-                                    </div></a>
-                                </false>
-                            </check>
-
-                        </repeat>
-                    </div> <!--display levels-->
-
-                    <div id="add-level">
-                        <div class="row form-group">
-                            <div class="col">
-                                <label><small>Level name</small></label>
-                                <input id="level-name" class="form-control" type="text" name="level-name">
-                            </div>
-                        </div>
-
-                        <div class="row form-group">
-                            <div class="col text-right">
-                                <button id="add-criteria-btn" class="btn-sm btn-outline-info rounded-0">&#43;Add Criteria</button>
-                            </div>
-                        </div>
-
-                        <div id="criteria-text">
-                            <div class='row form-group'>
-                                <div class='col-9'>
-                                    <input id='cret-type' class='form-control' type='text' name='level-type' placeholder='Criteria type'>
+                    <check if="{{ isset(@GET['addLevel']) }}">
+                        <true>
+                            <div id="add-level">
+                                <div class="row form-group">
+                                    <div class="col">
+                                        <label><small>Level name</small></label>
+                                        <input id="level-name" class="form-control" type="text" name="level-name">
+                                    </div>
                                 </div>
-                                <div class='col-3 text-right'>
-                                    <button id='confirm' class='btn btn-warning rounded-0'>Add</button>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div id="added"></div> <!--added levels-->
-
-                        <div id="add-rm-block">
-                            <div class="form-group row mt-1">
-                                <div class="col text-right">
-                                    <button id="remove-text" class="btn btn-sm bg-danger">Remove</button>
+                                <div id="criteria-text">
+                                    <div class='row form-group'>
+                                        <div class='col-9'>
+                                            <input id='cret-type' class='form-control' type='text' name='level-type' placeholder='Criteria type'>
+                                        </div>
+                                        <div class='col-3 text-right'>
+                                            <button id='confirm' class='btn btn-warning rounded-0'>Add</button>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="form-group row mt-4">
-                                <div class="col">
-                                    <button id="submit" class="btn btn-outline-success btn-block rounded-0">Submit</button>
-                                </div>
-                            </div>
-                        </div> <!--remove/submit button-->
-                    </div> <!--add level block-->
+                                <div id="added"></div> <!--added levels-->
+
+                                <div id="add-rm-block">
+                                    <div class="form-group row mt-1">
+                                        <div class="col text-right">
+                                            <button id="remove-text" class="btn btn-sm bg-danger">Remove</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row mt-4">
+                                        <div class="col">
+                                            <button id="submit" class="btn btn-outline-success btn-block rounded-0">Submit</button>
+                                        </div>
+                                    </div>
+                                </div> <!--remove/submit button-->
+                            </div> <!--add level block-->
+                        </true>
+
+                        <false>
+                            <div id="display-level">
+
+                                <repeat group="{{ @levels }}" value="{{ @level }}">
+                                    <check if="{{ @level['active'] == 1}}">
+                                        <true>
+                                            <a class="level-link" href="{{@BASE}}/levels/{{ @level['id']}}"><div  class="level-block form-group row m-0 border border-secondary p-2 pt-3 mb-2">
+                                                <div class="col-6">
+                                                    <p class="h5 font-weight-light">{{@level['level']}}</p>
+                                                </div>
+                                                <div class="col-6 text-right">
+                                                    <button id="disable-{{ @level['id']}}" class="btn-sm rounded-0 btn-outline-danger">Disable</button>
+                                                </div>
+                                            </div></a>
+                                        </true>
+
+                                        <false>
+                                            <a class="level-link" href="{{@BASE}}/levels/{{ @level['id']}}"><div class="level-block form-group row m-0 border border-mute p-2 pt-3 mb-2">
+                                                <div class="col-6">
+                                                    <p class="h5 font-weight-light text-muted">{{@level['level']}}</p>
+                                                </div>
+                                                <div class="col-6 text-right text-muted">
+                                                    <button id="enable-{{ @level['id']}}" class="btn-sm rounded-0 btn-outline-success">Enable</button>
+                                                </div>
+                                            </div></a>
+                                        </false>
+                                    </check>
+
+                                </repeat>
+                            </div> <!--display levels-->
+                        </false>
+                    </check>
 
                 </div>
             </div>
@@ -108,15 +105,6 @@
     </div>
 </div>
 </div>
-
-<!--<div class='row m-0 border border-secondary p-1'>-->
-    <!--<div class='col-8'>-->
-        <!--<p class='h-6'>val</p>-->
-    <!--</div>-->
-    <!--<div id='remove' class='col-4'>-->
-        <!--<p class='h6 text-danger'>X</p>-->
-    <!--</div>-->
-<!--</div>-->
 
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
