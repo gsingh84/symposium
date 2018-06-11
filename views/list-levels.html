@@ -7,27 +7,15 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
     <link rel="stylesheet" href="{{@BASE}}/views/styles/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>All Competitions</title>
+    <title>Levels</title>
 
     <style>
         .card {
             border-top: 5px solid #A9CCE3;
             border-radius: 0;
         }
-
-        .card:hover {
-            transition-property: all;
-            transition-duration: 0.5s;
-            background-color: #A9DFBF;
-        }
-
-        .card-link, .card-link:hover {
-            text-decoration: none;
-            color: black;
-        }
     </style>
 </head>
-
 <body>
 <nav class="navbar navbar-inverse navbar-toggleable nav">
     <div id="icon-bar" class="navbar-nav row">
@@ -49,29 +37,19 @@
         <div class="col">
             <div class="mt-2"></div>
             <div class="form-group row">
-                <repeat group="{{ @competitions }}" value="{{ @competition }}">
+                <repeat group="{{ @levels }}" value="{{ @level }}">
                     <div class="col-lg-4 mb-2">
-                        <a class="card-link" href="{{@BASE}}/participants/{{ @competition['competition_id']}}">
                         <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title"><small class="text-muted font-weight-light">Competition: </small>{{ @competition['competition_name'] }}</h5>
-                                <p class="card-text"><small class="text-muted font-weight-light">Level: </small>{{ @competition['level'] }}</p>
-
-                                <a href="{{@BASE}}/create?addMore={{@competition['competition_name']}}" class="btn-sm text-center mt-2 btn-outline-success btn-block btn-primary font-weight-light"><i class="fa fa-plus"></i> Add More Level</a>
+                            <div class="card-body text-center">
+                                <h5 class="card-title"><small class="text-muted font-weight-light">Level: </small>{{ @level['level'] }}</h5>
+                                <a href="{{@BASE}}/participants/{{ @level['competition_id']}}/{{ @level['level_id'] }}" class="btn rounded-0 btn-success font-weight-light"><i class="fa fa-eye"></i> View Participants</a>
                             </div>
                         </div>
-                        </a>
                     </div>
                 </repeat>
-
             </div>
         </div>
     </div>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
 </body>
-<script src="//code.jquery.com/jquery.js"></script>
 </html>

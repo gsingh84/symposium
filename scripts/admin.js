@@ -5,15 +5,41 @@ $("#list-head").hide();
 //create competition
 $("form").on("submit", function (event) {
     event.preventDefault();
+    //serialize form data
     var data = $('form').serializeArray();
     data.push({name:'submit', value:'clicked'});
 
+    //push form entry if admin adding data from excel
+    if($("#fileToUpload").val()) {
+        data.push({name:'add-excel', value:'clicked'});
+    }
+
+    //send from data using post method to the current route
     $.post(window.location, data, function(response){
-        // alert(response);
-        var comp_id = response;
-        success_msg("Competition Created");
-        if($("#fileToUpload").val()) {
-            readFile(comp_id);
+        //convert data into json form for accessing the php array
+        response = JSON.parse(response);
+        console.log(jQuery.type(response));
+
+
+        //check type of response we get from php
+        if (jQuery.type(response) == "object") {
+            //loop over the object and append the error text
+            $.each(response, function( key, value ) {
+                console.log( key + ": " + value );
+                $("#" + key).html(value);
+            });
+        } else {
+            //read the excel if user selected. if not that means admin
+            //adding participants manually
+            if ($("#fileToUpload").val()) {
+                var comp_id = response;
+                if($("#fileToUpload").val()) {
+                    readFile(comp_id);
+                }
+            }
+            //show success message
+            success_msg("Competition Created");
+
         }
     });
 });

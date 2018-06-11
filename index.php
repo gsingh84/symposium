@@ -29,9 +29,10 @@
         session_start();
         session_unset();
 
-        //get competitions and levels
-        $competitions = selectJoin();
+        $db = new Database();
+        $competitions = $db->getCompAndLevels("competitions.id");
 
+        //get competitions and levels
         $f3->set('competitions', $competitions);
 
         //render
@@ -39,19 +40,8 @@
         echo $template->render('views/add-more.html');
     });
 
-//    $f3->route('GET|POST /', function ()
-//    {
-//        session_start();
-//
-//        session_unset();
-//        $template = new Template();
-//        //render
-//        echo $template->render('views/admin-home.html');
-//    });
 
-
-
-
+    //create competition route
     $f3->route('GET|POST /create', function ($f3)
     {
         session_start();
@@ -63,42 +53,50 @@
         $f3->set('levels', $levels);
         $f3->set('judges', $judges);
 
+        //set session for making form sticky
         if (isset($_POST['next'])) {
             $_SESSION['form'] = $_POST;
         }
 
         //form submitted?
         if(isset($_POST['submit'])) {
-            //insert competition
-            $comp_id = $db->insertCompetition(array($_POST['comp-name']));
-            $level_id = $_POST['selected-level'];
 
-            //insert selected judges
-            foreach ($_POST['judges'] as $judge_id) {
-                $db->insertJudge_level_comp_ids(array($judge_id, $level_id, $comp_id));
-            }
+            //validate user inputs
+            require_once "models/createCompValidation.php";
 
-            //insert manually added participants
-            if(isset($_SESSION['participants'])) {
-                $details = $_SESSION['participants'];
+            //insert data if there is no error
+            if ($success) {
+                //insert competition
+                $comp_id = $db->insertCompetition(array($_POST['comp-name']));
+                $level_id = $_POST['selected-level'];
 
-                //get each line from array
-                foreach ($details as $line) {
-                    $parts = explode("|", $line);
-
-                    $info = array();
-                    foreach ($parts as $item) {
-                        array_push($info, $item);
-                    }
-                    array_push($info, $comp_id, $level_id);
-                    //insert into db
-                    $db->insertParticipant($info);
+                //insert selected judges
+                foreach ($_POST['judges'] as $judge_id) {
+                    $db->insertJudge_level_comp_ids(array($judge_id, $level_id, $comp_id));
                 }
 
-                unset($_SESSION['participants']);
-            }
+                //insert manually added participants
+                if(isset($_SESSION['participants'])) {
+                    $details = $_SESSION['participants'];
 
-            echo $comp_id; //return newly inserted competition id
+                    //get each line from array
+                    foreach ($details as $line) {
+                        $parts = explode("|", $line);
+
+                        $info = array();
+                        foreach ($parts as $item) {
+                            array_push($info, $item);
+                        }
+                        array_push($info, $comp_id, $level_id);
+                        //insert into db
+                        $db->insertParticipant($info);
+                    }
+
+                    unset($_SESSION['participants']);
+                }
+
+                echo $comp_id; //return newly inserted competition id
+            }
             return;
         }
 
@@ -342,6 +340,18 @@
         $template = new Template();
         echo $template->render('views/judges.html');
 
+    });
+
+    //list of levels
+    $f3->route('GET|POST /participants/@comp_id', function($f3, $params){
+
+        $db = new Database();
+//        $levels = $db->getCompAndLevelsByCompId($params['comp_id'],"level_id");
+        $f3->set('levels', $db->getCompAndLevelsByCompId($params['comp_id'],"level_id"));
+
+        //render
+        $template = new Template();
+        echo $template->render('views/list-levels.html');
     });
 
     //manage participants

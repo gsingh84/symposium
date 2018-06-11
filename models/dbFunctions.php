@@ -329,11 +329,26 @@ function deleteJudge($id){
     return $id;
 }
 
-function selectJoin() {
+//select competitions and levels from multiple tables
+function selectCompAndLevels($groupBy) {
+
+    $table = "judges_levels";
+    $inner_join1 = "levels";
+    $joinIdFrom1 = "judges_levels.level_id = levels.id";
+//    $joinIdTO1 = "levels.id";
+
+    $inner_join2 = "competitions";
+    $joinIdFrom2 = "judges_levels.competition_id";
+    $joinIdTO2 = "competitions.id";
+
+
+    $sql = "SELECT * FROM $table INNER JOIN $inner_join1 ON $joinIdFrom1
+    INNER JOIN $inner_join2 ON $joinIdFrom2 = $joinIdTO2 GROUP BY $groupBy";
+
 
     //get all rows from db
-    $sql = "SELECT * FROM judges_levels INNER JOIN levels ON judges_levels.level_id = levels.id 
-    INNER JOIN competitions ON judges_levels.competition_id = competitions.id GROUP BY competitions.id";
+//    $sql = "SELECT * FROM judges_levels INNER JOIN levels ON judges_levels.level_id = levels.id
+//    INNER JOIN competitions ON judges_levels.competition_id = competitions.id GROUP BY $groupBy";
 
     global $dbh;
 

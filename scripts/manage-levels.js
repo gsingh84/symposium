@@ -86,3 +86,9 @@
         });
     }
 
+    //Go back to previous page by clicking on back button
+    $("#go-back").click(function (event) {
+        event.preventDefault();
+        window.history.back();
+    });
+

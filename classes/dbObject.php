@@ -112,6 +112,48 @@ class DbObject
     }
 
     /**
+     * This method select the data from multiple tables using inner join
+     * @param $tableName
+     * @param $tablesToJoin
+     * @param $options
+     * @param $id
+     * @return PDOStatement
+     */
+    public function selectJoin($tableName, $tablesToJoin, $options, $id)
+    {
+        //create join statement
+        $join = "";
+        foreach($tablesToJoin as $key => $value) {
+            $join .= " INNER JOIN " . $key . " ON " . $value . ' ';
+        }
+
+        //where clause
+        $where = "";
+        foreach($options as $key => $value) {
+            $where .= $key . '=:' . $key . ' AND ';
+        }
+
+        //check where condition
+        $where = empty($where) ? '': ' WHERE ' . rtrim($where, ' AND ');
+
+        //define Query
+        $sql = "SELECT * FROM {$tableName} {$join} {$where} GROUP BY $id";
+
+        //prepare statement
+        $statement = $this->dbh->prepare($sql);
+
+        //bind params
+        foreach ($options as $key => &$value) {
+            $statement->bindParam(':'.$key, $value);
+        }
+
+        //execute statement
+        $statement->execute();
+
+        return $statement;
+    }
+
+    /**
      * Method that insert the data into the database
      * @param $tableName name of the table
      * @param $columns columns name

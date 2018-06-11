@@ -26,7 +26,7 @@ $(".update-btn").click(function () {
 var btnId;
 $(".del-btn").click(function(){
    btnId = this.id.split("-");
-   $("#del_warning").show(150);
+   $("#del_warning").show();
 });
 
 // delete participant if yes
@@ -43,17 +43,17 @@ $("#confirm-del").click(function(){
 
 //cancel deleting
 $("#cancel-del").click(function () {
-    $("#del_warning").hide(150);
+    $("#del_warning").hide();
 });
 
 //success message for adding manual participants
 function success_msg(msg) {
     setTimeout(function() {
-        $("#overlay").removeClass("overlay h3 p-3 pt-4 ml-5");
+        $("#overlay").removeClass("overlay h6 p-3");
         $("#overlay").html("");
         location.reload();
     }, 2000);
-    $("#overlay").addClass("overlay h3 p-3 pt-4 ml-5");
+    $("#overlay").addClass("overlay h6 p-3");
     $("#overlay").html(msg + " &#10003;");
 }
 
