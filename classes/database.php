@@ -257,7 +257,7 @@ class Database extends DbObject
     function insertLevel($data)
     {
         $tableName = "levels";
-        $columns = array("level", "active");
+        $columns = array("level", "time_allow", "active");
 
         return $this->insert($tableName, $columns, $data);
     }
@@ -270,7 +270,7 @@ class Database extends DbObject
     function insertCriteria($data)
     {
         $tableName = "criteria";
-        $columns = array("criteria", "level_id");
+        $columns = array("criteria", "level_id", "weight", "content_ques");
 
         return $this->insert($tableName, $columns, $data);
     }

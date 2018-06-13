@@ -5,6 +5,7 @@ $("#list-head").hide();
 //create competition
 $("form").on("submit", function (event) {
     event.preventDefault();
+    var msg = "Competition Created";
     //serialize form data
     var data = $('form').serializeArray();
     data.push({name:'submit', value:'clicked'});
@@ -12,6 +13,10 @@ $("form").on("submit", function (event) {
     //push form entry if admin adding data from excel
     if($("#fileToUpload").val()) {
         data.push({name:'add-excel', value:'clicked'});
+    }
+    if ($("input[name=comp-name]").attr('id')) {
+        msg = "Level Successfully Added";
+        data.push({name:'comp-name', value:$("input[name=comp-name]").attr('id')});
     }
 
     //send from data using post method to the current route
@@ -25,7 +30,7 @@ $("form").on("submit", function (event) {
         if (jQuery.type(response) == "object") {
             //loop over the object and append the error text
             $.each(response, function( key, value ) {
-                console.log( key + ": " + value );
+                // console.log( key + ": " + value );
                 $("#" + key).html(value);
             });
         } else {
@@ -38,7 +43,7 @@ $("form").on("submit", function (event) {
                 }
             }
             //show success message
-            success_msg("Competition Created");
+            success_msg(msg);
 
         }
     });
@@ -164,3 +169,4 @@ function success_msg(msg) {
     $("#overlay").addClass("overlay h6 p-3");
     $("#overlay").html(msg + " &#10003;");
 }
+

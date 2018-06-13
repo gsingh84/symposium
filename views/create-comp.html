@@ -77,7 +77,7 @@
                         <span class="font-wright-light text-danger float-right"><small id="comp-name"></small></span>
                         <input name="comp-name" type="text" class="form-control font-weight-light border border-primary"
                                <check if="{{ isset(@GET['addMore']) }}">
-                                   <true> value="{{@GET['addMore']}}" disabled</true>
+                                   <true> id='{{@GET['id']}}' value="{{@GET['addMore']}}" disabled</true>
                                    <false> value="{{@$_SESSION['form']['comp-name']}}" </false>
                                </check>
                         placeholder="Enter name of the competition">

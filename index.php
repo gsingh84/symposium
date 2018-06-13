@@ -66,10 +66,14 @@
 
             //insert data if there is no error
             if ($success) {
-                //insert competition
-                $comp_id = $db->insertCompetition(array($_POST['comp-name']));
-                $level_id = $_POST['selected-level'];
 
+                $comp_id = $_POST['comp-name'];
+                if (!is_numeric($_POST['comp-name'])) {
+                    //insert competition
+                    $comp_id = $db->insertCompetition(array($_POST['comp-name']));
+                }
+
+                $level_id = $_POST['selected-level'];
                 //insert selected judges
                 foreach ($_POST['judges'] as $judge_id) {
                     $db->insertJudge_level_comp_ids(array($judge_id, $level_id, $comp_id));
@@ -279,22 +283,74 @@
         $data = $db->getLevels();
         $f3->set('levels', $data);
 
-        //get input data from levels.html
-        $levels = $_POST['data'];
-        $levelName =  $_POST['input'];
-
+        //update levels "active" column
         if(strlen($_POST["level_id"]) > 0 && strlen($_POST["active"]) > 0) {
             $active = $_POST["active"];
             return $db->updateLevel(array("active" => $active), $_POST['level_id']);
         }
 
-        //insert level and criteria
-        if(strlen($levelName) > 0 && sizeof($levels) > 0) {
-            $id = $db->insertLevel(array($levelName));
+        //get criteria by level
+        if(isset($_POST['get_criteria'])) {
+            echo json_encode($db->getCriteriaByLevelId($_POST['select_from']));
+            return;
+        }
 
-            foreach ($levels as $level) {
-                $db->insertCriteria(array($level, $id));
+        //insert level and criteria
+        if (isset($_POST['submit'])) {
+
+            require_once "models/validateLevels.php";
+
+            if ($success) {
+                $id = "";
+                if (!isset($_POST['im_questions'])) {
+                    //insert level name first and get id
+                    $id = $db->insertLevel(array($_POST['level-name'], floatval($_POST['time-allowed'])));
+                    echo $id;
+                }
+
+                if (!empty($_POST['c-ques'][0]) || !empty($_POST['p-ques'][0])) {
+                    $index = 0;
+                    while ($index < sizeof($_POST['c-ques'])) {
+
+                        //question and its weight
+                        $content_question = $_POST['c-ques'][$index];
+                        $weight = $_POST['c-weight'][$index];
+
+                        //insert content type question in the database
+                        $db->insertCriteria(array($content_question, $id, $weight));
+                        $index++;
+                    }
+
+                    $index = 0;
+                    while ($index < sizeof($_POST['p-ques'])) {
+
+                        //question and its weight
+                        $presentation_question = $_POST['p-ques'][$index];
+                        $weight = $_POST['p-weight'][$index];
+
+                        //insert presentation type question in the database
+                        $db->insertCriteria(array($presentation_question, $id, $weight, "0"));
+                        $index++;
+                    }
+                }
+
+                //insert imported questions from existing levels
+                if (isset($_POST['im_questions'])) {
+                    foreach ($_POST['im_questions'] as $questions) {
+                        $array = array();
+                        foreach ($questions as $key => $val) {
+                            if ($key == "weigh") {
+                                array_push($array, $_POST['im_level']);
+                            }
+                            array_push($array, $val);
+                        }
+                        $db->insertCriteria($array);
+                    }
+                    echo "looped";
+                }
             }
+
+            $_POST = array(); //clear form data after inserting
             return;
         }
 
@@ -346,7 +402,6 @@
     $f3->route('GET|POST /participants/@comp_id', function($f3, $params){
 
         $db = new Database();
-//        $levels = $db->getCompAndLevelsByCompId($params['comp_id'],"level_id");
         $f3->set('levels', $db->getCompAndLevelsByCompId($params['comp_id'],"level_id"));
 
         //render
@@ -377,6 +432,13 @@
         echo $template->render('views/manage-participants.html');
     });
 
+    //list of levels
+    $f3->route('GET|POST /sign-in', function($f3, $params){
+
+        //render
+        $template = new Template();
+        echo $template->render('views/sign-in.html');
+    });
 
     //Run fat free
     $f3->run();

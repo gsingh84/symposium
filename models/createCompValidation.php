@@ -9,9 +9,9 @@
 
     //form submitted?
     if (isset($_POST['submit'])) {
-        //competition is empty?
+        //competition field is empty?
         if(empty($_POST['comp-name'])) {
-           $errors['comp-name'] = "Competition name required";
+           $errors['comp-name'] = "Competition name is required";
            $success = false;
         }
         //make sure user selected level

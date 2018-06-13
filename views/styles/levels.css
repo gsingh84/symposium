@@ -13,6 +13,10 @@ body{
     text-decoration: none;
 }
 
+.btn-link, .btn-link:hover {
+    text-decoration: none;
+}
+
 .level-block {
     color: black;
 }

@@ -29,7 +29,7 @@
 </head>
 
 <body>
-<nav class="navbar navbar-inverse navbar-toggleable nav">
+<nav class="navbar navbar-inverse navbar-toggleable nav fixed-top">
     <div id="icon-bar" class="navbar-nav row">
         <a style="margin-left: 5px;" class="navbar-brand" href="{{@BASE}}"> <img id="brand-icon" src="{{@BASE}}/views/images/admin.svg"> <span id="brand-head">Admin</span></a>
     </div>
@@ -44,10 +44,12 @@
         </div>
     </div>
 </nav><!-- nav bar -->
+
 <div class="container">
     <div class="form-group row">
         <div class="col">
-            <div class="mt-2"></div>
+            <div style="margin-top: 70px;"></div>
+
             <div class="form-group row">
                 <repeat group="{{ @competitions }}" value="{{ @competition }}">
                     <div class="col-lg-4 mb-2">
@@ -57,7 +59,7 @@
                                 <h5 class="card-title"><small class="text-muted font-weight-light">Competition: </small>{{ @competition['competition_name'] }}</h5>
                                 <p class="card-text"><small class="text-muted font-weight-light">Level: </small>{{ @competition['level'] }}</p>
 
-                                <a href="{{@BASE}}/create?addMore={{@competition['competition_name']}}" class="btn-sm text-center mt-2 btn-outline-success btn-block btn-primary font-weight-light"><i class="fa fa-plus"></i> Add More Level</a>
+                                <a href="{{@BASE}}/create?addMore={{@competition['competition_name']}}&id={{@competition['competition_id']}}" class="btn-sm text-center mt-2 btn-outline-success btn-block btn-primary font-weight-light"><i class="fa fa-plus"></i> Add More Level</a>
                             </div>
                         </div>
                         </a>
