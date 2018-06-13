@@ -126,6 +126,7 @@ $(document).ready(function () {
         }
     });
 
+    var level_id = "";
     //submit level and question data
     $("form").on("submit", function(event){
         event.preventDefault();
@@ -137,6 +138,7 @@ $(document).ready(function () {
         $.post("./levels", data, function(response){
 
             response = JSON.parse(response);
+            console.log(response);
             //check type of response we get from php
             if (jQuery.type(response) == "object") {
                 //loop over the object and append the error text
@@ -144,13 +146,14 @@ $(document).ready(function () {
                     $("#" + key).css("border", value);
                 });
             } else {
-                //send imported data
-                send(response, questions);
+                level_id = response;
                 $('form').find("input[type=text]").val("");
                 // window.history.back();
             }
         });
-
+        //send imported questions data
+        // send(level_id, questions) ;
+        console.log(level_id);
         questions = []; $("#imported-questions").html('');
     });
 

@@ -333,24 +333,24 @@
                         $index++;
                     }
                 }
-
-                //insert imported questions from existing levels
-                if (isset($_POST['im_questions'])) {
-                    foreach ($_POST['im_questions'] as $questions) {
-                        $array = array();
-                        foreach ($questions as $key => $val) {
-                            if ($key == "weigh") {
-                                array_push($array, $_POST['im_level']);
-                            }
-                            array_push($array, $val);
-                        }
-                        $db->insertCriteria($array);
-                    }
-                    echo "looped";
-                }
             }
 
-            $_POST = array(); //clear form data after inserting
+//            $_POST = array(); //clear form data after inserting
+            return;
+        }
+
+        //insert imported questions from existing levels
+        if (isset($_POST['im_questions'])) {
+            foreach ($_POST['im_questions'] as $questions) {
+                $array = array();
+                foreach ($questions as $key => $val) {
+                    if ($key == "weigh") {
+                        array_push($array, $_POST['im_level']);
+                    }
+                    array_push($array, $val);
+                }
+                $db->insertCriteria($array);
+            }
             return;
         }
 
