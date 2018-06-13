@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{@BASE}}/views/styles/judge.css">
+    <link rel="stylesheet" href="<?= ($BASE) ?>/views/styles/judge.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>Judge</title>
@@ -23,8 +23,8 @@
 <!--judge container-->
 <div class="container mt-5 bg-light p-0 rounded judge">
     <nav class="navbar navbar-toggleable-sm bg-dark py-1 text-white">
-        <!--<a class="navbar-brand">{{@participants['first_name']}} {{@participants['last_name']}}</a>-->
-        <a class="navbar-brand py-0">{{@participant['first_name']}} {{@participant['last_name']}}</a>
+        <!--<a class="navbar-brand"><?= ($participants['first_name']) ?> <?= ($participants['last_name']) ?></a>-->
+        <a class="navbar-brand py-0"><?= ($participant['first_name']) ?> <?= ($participant['last_name']) ?></a>
         <form class="form-inline">
             <button class="btn btn-sm btn-outline-danger my-2 my-sm-0" type="">Go back</button>
         </form>
@@ -51,17 +51,17 @@
 
                         <div id="content-sliders">
 
-                            <repeat group="{{ @criteria }}" value="{{ @cri}}">
+                            <?php foreach (($criteria?:[]) as $cri): ?>
                                 <div class="py-0 range-slider mb-2">
                                     <div>
-                                        <label>{{@cri['criteria']}}</label>
+                                        <label><?= ($cri['criteria']) ?></label>
                                     </div>
                                     <div>
-                                        <input name="{{@cri['criteria']}}" class="range-slider__range" type="range" min="0" step="1" max="20">
+                                        <input name="<?= ($cri['criteria']) ?>" class="range-slider__range" type="range" min="0" step="1" max="20">
                                         <span class="range-slider__value">&nbsp;</span>
                                     </div>
                                 </div>
-                            </repeat>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                     <div class="col-md-12 mt-2 border">

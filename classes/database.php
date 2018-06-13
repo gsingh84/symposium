@@ -148,6 +148,7 @@ class Database extends DbObject
 
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }
+    
 
     /**
      * Get level by id

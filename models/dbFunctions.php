@@ -1,7 +1,9 @@
 <?php
 //    require_once '/home2/fastwebg/symposiumConfig.php';
-require_once '/home/gsinghgr/config.php';
+require_once '/home/asinghgr/config.php';
 
+error_reporting(E_ALL);
+ini_set('display_errors', TRUE);
 $dbh;
 connect();
 /**
@@ -201,7 +203,7 @@ function getParticipants($id) {
  */
 function getJudgeId($username) {
     //get all rows from db
-    $sql = "SELECT id FROM judges WHERE username = :username ";
+    $sql = "SELECT * FROM judges WHERE username = :username ";
     global $dbh;
     //prepare statement
     $statement = $dbh->prepare($sql);
@@ -210,7 +212,7 @@ function getJudgeId($username) {
     //execute statement
     $statement->execute();
     //fetch all rows
-    $result = $statement->fetch(PDO::FETCH_ASSOC);
+    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
     //return data
     return $result;
 }
@@ -349,4 +351,5 @@ function selectJoin() {
     //return data
     return $result;
 }
+
 
