@@ -92,8 +92,15 @@
         setTimeout(function() {
             $("#overlay").removeClass("overlay h4 p-3 ml-4");
             $("#overlay").html("");
-            window.location = "./create";
+            window.history.back();
+            // window.location = "./create";
         }, 2000);
         $("#overlay").addClass("overlay h4 p-3 ml-4");
         $("#overlay").html("Participants Added &#10003;");
     }
+
+    //Go back to previous page by clicking on back button
+    $("#go-back").click(function (event) {
+        event.preventDefault();
+        window.history.back();
+    });

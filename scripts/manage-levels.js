@@ -1,50 +1,157 @@
+$(document).ready(function () {
+    //hide import from existing levels field
+    $("#import-from-levels").hide();
+    //hide remove buttons
+    $("#rm-pres-btn").hide();
+    $("#rm-cont-btn").hide();
+    //hide expand criteria btn
+    $("#expand-criteria").hide();
 
-    //hide add level field initially
-    $("#remove-text").hide();
-    $("#add-rm-block").hide();
-
-    var levelId = 0;
-    var criterias = [];
-    //confirm criteria
-    $("#confirm").click(function(){
-        var val = $("#cret-type").val();
-        if(val.length > 0) {
-            $("#remove-text").slideDown("fast");
-            criterias.push(val);
-            levelId++;
-            $("#added").append("<div id='level-id"+levelId+"' class='row m-0 pt-1 border border-secondary p-1'>\n" +
-                "    <div class='col'>\n" +
-                "        <p class='h-6'>"+val+"</p>\n" +
-                "    </div>\n" +
-                "</div>");
-            $("#add-rm-block").fadeIn(150);
-        }
-
-        $("#cret-type").val('');
+    //show existing levels if user want to choose questions from there
+    $("#add-oldQues-btn").click(function () {
+        //show import from existing level
+        $("#import-from-levels").slideDown("fast");
     });
 
-    //remove level criteria
-    $("#remove-text").click(function(){
-        $('#level-id'+levelId).remove();
+    var questions = [];
+    //show imported questions on change event
+    $("#select-from").on('change', function () {
+        //clear div and questions array on event change
+        $("#imported-questions").html(''); questions = [];
+        //get level id
+        var id = $("#select-from").val();
 
-        if(levelId > 0) {
-            levelId--;
-            criterias.splice(criterias.length - 1, 1);
-        }
-        if(levelId == 0) {
-            $("#add-rm-block").fadeOut(150);
-            criterias = [];
+        if (id != "none") {
+            $.post("./levels", {select_from:id, get_criteria:'yes'}, function(result){
+                result = JSON.parse(result);
+
+                var question = ""; var weight = ""; var label = ""; var isContent = "";
+                //loop over database results we get from server
+                for (var i = 0; i < result.length; i++) {
+                    label = "Content Question";
+                    $.each(result[i], function(key, val) {
+                        if (key == "criteria") {
+                            question = val;
+                        }
+                        if (key == "weight") {
+                            weight = val;
+                        }
+                        if (key == "content_ques") {
+                            if (val == 0) {
+                                label = "Presentation Criteria";
+                                isContent = 0;
+                            } else
+                                isContent = 1;
+                        }
+                    });
+
+                    //push imported question to array
+                    questions.push({ques: question, weigh: weight, isQues: isContent});
+                    $("#imported-questions").append("<div class=\"form-group row\">\n" +
+                        "                                            <div class=\"col-md-9\">\n" +
+                        "                                                <small><label class=\"font-weight-light text-muted\">"+ label +": </label></small>\n" + question +
+                        "                                            </div>\n" +
+                        "                                            <div class=\"col-md-3\">\n" +
+                        "                                                <small><label class=\"font-weight-light text-muted\">Weight: </label></small>\n" + weight +
+                        "                                            </div>\n" +
+                        "                                        </div>");
+                    $("#expand-criteria").show(150);
+                    $("#criteria-text").hide();
+                }
+            });
         }
     });
 
-    //submit data
-    $("#submit").click(function(){
-        sendLevelName($("#level-name").val(), criterias);
-        $("#add-rm-block").hide();
-        $("#level-name").val('')
-        $("#added").html('');
-        criterias = [];
-        window.location = "./create";
+    //hide show criteria text on down arrow btn click
+    $("#expand-criteria").click(function () {
+        $("#criteria-text").toggle(150);
+        $("#arrow").toggleClass("fa fa-angle-down fa fa-angle-up");
+    });
+
+    var contentQuesNumber = 0;
+    //add more content question field
+    $("#add-cont-ques").click(function(){
+
+        contentQuesNumber++;
+        $("#new-cont-ques").append("<div id='cont"+ contentQuesNumber +"' class='row form-group'>\n" +
+            "                                        <div class='col-9'>\n" +
+            "                                            <input class='form-control' type='text' name='c-ques[]' placeholder='Question: '>\n" +
+            "                                        </div>\n" +
+            "\n" +
+            "                                        <div class='col-3 text-right'>\n" +
+            "                                            <input class='form-control' type='text' name='c-weight[]' placeholder='Weight:'>\n" +
+            "                                        </div>\n" +
+            "                                    </div>");
+        $("#rm-cont-btn").fadeIn(150);
+    });
+
+    var presentationQuesNum = 0;
+    //add more presentation questions field
+    $("#add-presentation-ques").click(function(){
+
+        presentationQuesNum++;
+        $("#new-p-ques").append("<div id='pres"+ presentationQuesNum +"' class='row form-group'>\n" +
+            "                                        <div class='col-9'>\n" +
+            "                                            <input class='form-control' type='text' name='p-ques[]' placeholder='Question: '>\n" +
+            "                                        </div>\n" +
+            "\n" +
+            "                                        <div class='col-3 text-right'>\n" +
+            "                                            <input class='form-control' type='text' name='p-weight[]' placeholder='Weight:'>\n" +
+            "                                        </div>\n" +
+            "                                    </div>");
+        $("#rm-pres-btn").fadeIn(150);
+    });
+
+    //remove presentation question type on remove btn click
+    $("#rm-pres-btn").click(function(){
+        $('#pres'+presentationQuesNum).remove();
+
+        if(presentationQuesNum > 0) {
+            presentationQuesNum--;
+        }
+        if(presentationQuesNum == 0) {
+            $("#rm-pres-btn").fadeOut(150);
+        }
+    });
+
+    //remove content question type by clicking on remove btn
+    $("#rm-cont-btn").click(function(){
+        $('#cont'+contentQuesNumber).remove();
+
+        if(contentQuesNumber > 0) {
+            contentQuesNumber--;
+        }
+        if(contentQuesNumber == 0) {
+            $("#rm-cont-btn").fadeOut(150);
+        }
+    });
+
+    //submit level and question data
+    $("form").on("submit", function(event){
+        event.preventDefault();
+        //serialize form data
+        var data = $('form').serializeArray();
+        data.push({name:'submit', value:'clicked'});
+
+        // send level name and questions data
+        $.post("./levels", data, function(response){
+
+            response = JSON.parse(response);
+            //check type of response we get from php
+            if (jQuery.type(response) == "object") {
+                //loop over the object and append the error text
+                $.each(response, function( key, value ) {
+                    $("#" + key).css("border", value);
+                });
+            } else {
+                //send imported data
+                send(response, questions);
+                $('form').find("input[type=text]").val("");
+                // window.history.back();
+            }
+        });
+
+        questions = []; $("#imported-questions").html('');
     });
 
     //disable level
@@ -80,9 +187,16 @@
     }
 
     //send single input and array of data to php file
-    function sendLevelName(input, data) {
-        $.post("./levels", {input:input, data:data}, function(response){
-            // alert(response);
+    function send(input, data) {
+        $.post("./levels", {im_level:input, im_questions:data}, function(response){
+            alert(response);
         });
     }
+
+    //Go back to previous page by clicking on back button
+    $("#go-back").click(function (event) {
+        event.preventDefault();
+        window.history.back();
+    });
+});
 

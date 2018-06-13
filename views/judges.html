@@ -20,7 +20,7 @@
                     <legend class="font-weight-light h5 mt-3">List of Judges</legend>
                 </div>
                 <div class="col-4 text-right">
-                    <a href="{{@BASE}}/create"><span class="h4">&larr; </span></a>
+                    <a id="go-back" href=""><span class="h4">&larr; </span></a>
                 </div>
             </div>
             <hr>
@@ -70,6 +70,12 @@ $(document).ready(function() {
         });
 
         $(this).parent().parent().remove();
+    });
+
+    //Go back to previous page by clicking on back button
+    $("#go-back").click(function (event) {
+        event.preventDefault();
+        window.history.back();
     });
 });
     

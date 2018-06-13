@@ -109,6 +109,42 @@ class Database extends DbObject
     }
 
     /**
+     * Method for getting competition and levels data from multiple joined tables
+     * @param $comp_id
+     * @param $groupBy
+     * @return mixed results
+     */
+    function getCompAndLevelsByCompId($comp_id, $groupBy)
+    {
+        $tableName = "judges_levels";
+        $options = array("competition_id" => $comp_id);
+
+        $tableToJoin = array("levels" => "judges_levels.level_id = levels.id",
+                            "competitions" => "judges_levels.competition_id = competitions.id");
+
+        $result = $this->selectJoin($tableName, $tableToJoin, $options, $groupBy);
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Method for getting competition and levels data from multiple joined tables
+     * @param $comp_id
+     * @param $groupBy
+     * @return mixed results
+     */
+    function getCompAndLevels($groupBy)
+    {
+        $tableName = "judges_levels";
+        $options = array();
+
+        $tableToJoin = array("levels" => "judges_levels.level_id = levels.id",
+            "competitions" => "judges_levels.competition_id = competitions.id");
+
+        $result = $this->selectJoin($tableName, $tableToJoin, $options, $groupBy);
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
      * Get all levels
      * @return array results
      */
@@ -222,7 +258,7 @@ class Database extends DbObject
     function insertLevel($data)
     {
         $tableName = "levels";
-        $columns = array("level", "active");
+        $columns = array("level", "time_allow", "active");
 
         return $this->insert($tableName, $columns, $data);
     }
@@ -235,7 +271,7 @@ class Database extends DbObject
     function insertCriteria($data)
     {
         $tableName = "criteria";
-        $columns = array("criteria", "level_id");
+        $columns = array("criteria", "level_id", "weight", "content_ques");
 
         return $this->insert($tableName, $columns, $data);
     }
