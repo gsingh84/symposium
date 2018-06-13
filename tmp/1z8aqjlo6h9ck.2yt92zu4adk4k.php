@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{@BASE}}/views/styles/judge.css">
+    <link rel="stylesheet" href="<?= ($BASE) ?>/views/styles/judge.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>Judge</title>
@@ -38,11 +38,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                <repeat group="{{ @participants }}" value="{{ @participant}}">
-                    <tr class="col-md-12" id="" data-val="{{@participant['id']}}">
-                        <th scope="row" id="row" style="background-color: lightyellow; width: 6%">{{@participant['id']}}</th>
-                        <td class="clickable">{{@participant['first_name']}}</td>
-                        <td class="clickable border-right"> {{@participant['last_name']}}</td>
+                <?php foreach (($participants?:[]) as $participant): ?>
+                    <tr class="col-md-12" id="" data-val="<?= ($participant['id']) ?>">
+                        <th scope="row" id="row" style="background-color: lightyellow; width: 6%"><?= ($participant['id']) ?></th>
+                        <td class="clickable"><?= ($participant['first_name']) ?></td>
+                        <td class="clickable border-right"> <?= ($participant['last_name']) ?></td>
                         <td class="clickable">10</td>
                         <td class="clickable">20</td>
                         <td class="clickable">30</td>
@@ -50,7 +50,7 @@
                         <td class="border text-center pl-0 pr-0 bg-light submit"><small><strong>Submit</strong></small></td>
 
                     </tr>
-                </repeat>
+                <?php endforeach; ?>
                 </tbody>
             </table>
         </div>

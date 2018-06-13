@@ -1,5 +1,4 @@
 <?php
-
     //turning on the error reporting
     error_reporting(E_ALL);
     ini_set('display_errors', TRUE);
@@ -7,8 +6,9 @@
     //Require the files (fat-free)
     require_once('vendor/autoload.php');
 
-    require_once '/home/gsinghgr/config.php';
+    require_once '/home/asinghgr/config.php';
     require_once "models/dbFunctions.php";
+
 
     //Create an instance of the Base Class
     $f3 = Base :: instance();
@@ -109,6 +109,8 @@
         echo $template->render('views/create-comp.html');
     });
 
+
+
     $f3->route('GET|POST /add-participant', function ()
     {
         session_start();
@@ -123,17 +125,11 @@
 
         $template = new Template();
         //render
-        echo $template->render('views/add-participant.html');
+        echo $template->render('views/add-participant2.html');
     });
 
     $f3->route('GET|POST /judge', function ($f3)
     {
-
-        $participants = getAllRows("participants");
-        $scores = getAllRows("scores");
-
-        $f3->set('participants', $participants);
-        $f3->set('scores', $scores);
 
         if (isset($_POST["submit"]))
         {
@@ -143,14 +139,14 @@
             $password = $_POST["password"];
 
             $id = getJudgeId($username);
+            $id = $id[0];
             $judgeid = $id['id'];
-            $competitions = getAllCompetitions($judgeid);
+//            echo $judgeid;
+//            $competitions = getAllCompetitions($judgeid);
 
-            $_SESSION["competitions"] = $competitions;
+            $_SESSION["judgeinfo"] = $id;
 
-            $location = "Location: http://asingh.greenriverdev.com/355/symposium/judge/".$judgeid;
-//            $location = "/judge/".$judgeid;
-//            $f3->reroute($location);
+            $location = 'Location: http://asingh.greenriverdev.com/355/symposium/judge/'.$judgeid;
             header($location);
         }
 
@@ -160,33 +156,45 @@
         echo $template->render('views/judgeLog.html');
     });
 
+
+
     $f3->route('GET|POST /judge/@judgeid', function ($f3,$params)
     {
-        $id = $params['id'];
+        $id = $params['judgeid'];
 
         session_start();
-        $competitions = $_SESSION["competitions"];
+        $judgeinfo = $_SESSION["judgeinfo"];
+//        print_r($judgeinfo);
+        $competitions = getAllCompetitions($id);
+//        print_r($competitions);
 
         $competitionArray = array();
 
-        $id = $params['judgeid'];
         $f3->set('judgeid', $id);
 
         foreach($competitions as $comp => $item) {
 
             array_push($competitionArray, $item["competition_name"]);
         }
+
         $f3->set('competitions', $competitionArray);
+        $f3->set('judgeinfo', $judgeinfo);
+
 
         $template = new Template();
         //render
         echo $template->render('views/competitions.html');
     });
 
+
+
     $f3->route('GET|POST /judge/@judgeid/@level', function ($f3,$params)
     {
         $level = $params['level'];
         $f3->set('level', $level);
+
+        session_start();
+        $judgeinfo = $_SESSION["judgeinfo"];
 
         $compId = getCommpid($level);
         $compId = $compId["id"];
@@ -194,6 +202,7 @@
         $levels = getAllLevels($compId);
 
         $compLevelsArray  = array();
+
         foreach($levels as $lev => $item)
         {
             array_push($compLevelsArray, $item["level"]);
@@ -201,10 +210,14 @@
 
         //        print_r($levels);
         $f3->set('compLevels', $levels);
+        $f3->set('judgeinfo', $judgeinfo);
+
         $template = new Template();
         //render
         echo $template->render('views/judgeLevel.html');
     });
+
+
 
     $f3->route('GET|POST /participant/@level', function ($f3,$params)
     {
@@ -222,58 +235,43 @@
         echo $template->render('views/judge.html');
     });
 
+
+
     $f3->route('GET|POST /score/@pid', function ($f3,$params)
     {
         $level = $params['pid'];
 
-//        echo $level;
-
         $participant = getParticipant($level);
         $f3->set('participant',$participant);
 
-//        print_r($participant);
+        $levelid = $participant['level_id'];
+
+        $info = new Database();
+
+        //get the criteria from the database
+        $criteria = $info->getCriteriaByLevelId($levelid);
+
+        $f3->set('criteria',$criteria);
+
+        if (isset($_POST['submit']))
+        {
+            $question1 = $_POST['Passing'];
+            $question2 = $_POST['dancing'];
+            $question3 = $_POST['delivery'];
+            $question4 = $_POST['eye-contact'];
+            $question5 = $_POST['voice'];
+            $question6 = $_POST['language'];
+            $question7 = $_POST['effectiveness'];
+
+
+        }
+
 
         $template = new Template();
          //render
          echo $template->render('views/participant.html');
      });
 
-    //    $f3->route('GET|POST /judge/@id', function ($f3,$params)
-    //    {
-    //        $id = $params['id'];
-    //
-    //        $participants = getParticipant($id);
-    //
-    //        $f3->set('participants', $participants);
-    //
-    //        if (isset($_POST["submit"]))
-    //        {
-    //            $q1 = $_POST["question-1"];
-    //            $q2 = $_POST["question-2"];
-    //            $q3 = $_POST["question-3"];
-    //
-    //            $delivery = $_POST["delivery"];
-    //            $eyeContact = $_POST["eye-contact"];
-    //            $voice = $_POST["voice"];
-    //            $language = $_POST["language"];
-    //            $effectiveness = $_POST["effectiveness"];
-    //
-    //            $total = $q1 + $q3 + $q2 + $delivery + $eyeContact + $voice + $language + $effectiveness;
-    //
-    //
-    //            $result = insertScores($id,$total);
-    //
-    //            if ($result)
-    //            {
-    //                $_SESSION["score"] = $total;
-    //                header("Location: http://fastweb.greenriverdev.com/355/symposium/judge");
-    //            }
-    //        }
-    //
-    //        $template = new Template();
-    //        //render
-    //        echo $template->render('views/participant.html');
-    //    });
 
     //manage levels OLD
     $f3->route('GET|POST /levels', function ($f3)

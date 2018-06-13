@@ -20,6 +20,7 @@ strong
 .card
 {
     box-shadow: 3px 3px ghostwhite;
+    transition: 0.3s;
 }
 #search-box {
     background-color: white;

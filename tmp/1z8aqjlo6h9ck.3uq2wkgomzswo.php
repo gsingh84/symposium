@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{@BASE}}/views/styles/judgeLog.css">
+    <link rel="stylesheet" href="<?= ($BASE) ?>/views/styles/judgeLog.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <title>{{@judgeinfo['judge_name']}}</title>
+    <title><?= ($judgeinfo['judge_name']) ?></title>
     <style>
         .card {
             border-top: 5px solid #A9CCE3;
@@ -17,7 +17,7 @@
 
 <body>
     <nav class="navbar navbar-toggleable-sm bg-light py-0 text-black welcome">
-        <a class="navbar-brand"><img height="40vh" width="50vw" src="{{@BASE}}/views/images/judge.png"> <strong id="{{@judgeid}}">{{@judgeinfo['judge_name']}}</strong> </a>
+        <a class="navbar-brand"><img height="40vh" width="50vw" src="<?= ($BASE) ?>/views/images/judge.png"> <strong id="<?= ($judgeid) ?>"><?= ($judgeinfo['judge_name']) ?></strong> </a>
         <form class="form-inline">
             <a class="nav-item nav-link" href="" style="border-left: 1px solid red; color: red">Sign Out</a>
         </form>
@@ -27,29 +27,29 @@
     <div class="container-fluid col-md-10 bg-light">
         <h3>All competitons</h3>
         <div class="row">
-            <repeat group="{{ @competitions }}" value="{{ @competition}}">
+            <?php foreach (($competitions?:[]) as $competition): ?>
                 <div class="col-md-3">
-                    <div class="card mt-3 mb-3" id="{{@competition}}">
+                    <div class="card mt-3 mb-3" id="<?= ($competition) ?>">
                         <div class="card-body">
-                            <h5 class="card-title"><small class="text-muted font-weight-light">Name : </small>{{@competition}}</h5>
+                            <h5 class="card-title"><small class="text-muted font-weight-light">Name : </small><?= ($competition) ?></h5>
                         </div>
                     </div>
                 </div>
-            </repeat>
+            <?php endforeach; ?>
         </div>
     </div>
 
         <!--<div class="container col-md-8">-->
             <!--<div class="row">-->
-                <!--<repeat group="{{ @competitions }}" value="{{ @competition}}">-->
+                <!--<?php foreach (($competitions?:[]) as $competition): ?>-->
                     <!--<div class="col-md-3 mt-4">-->
-                        <!--<div class="card" style="width: 18rem;" id="{{@competition}}">-->
+                        <!--<div class="card" style="width: 18rem;" id="<?= ($competition) ?>">-->
                             <!--<div class="card-body">-->
-                                <!--<h5 class="card-title"><small class="text-muted font-weight-light">Competetion : </small>{{@competition}}</h5>-->
+                                <!--<h5 class="card-title"><small class="text-muted font-weight-light">Competetion : </small><?= ($competition) ?></h5>-->
                             <!--</div>-->
                         <!--</div>-->
                     <!--</div>-->
-                <!--</repeat>-->
+                <!--<?php endforeach; ?>-->
             <!--</div>-->
         <!--</div>-->
 </body>

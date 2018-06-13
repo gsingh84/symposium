@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{@BASE}}/views/styles/judgeLog.css">
+    <link rel="stylesheet" href="<?= ($BASE) ?>/views/styles/judgeLog.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <title>{{@level}}</title>
+    <title><?= ($level) ?></title>
 </head>
 <body>
 <nav class="navbar navbar-toggleable-sm bg-light py-0 text-black welcome">
-    <a class="navbar-brand"><img height="40vh" width="50vw" src="{{@BASE}}/views/images/judge.png"> <strong>{{@judgeinfo['judge_name']}}</strong> </a>
+    <a class="navbar-brand"><img height="40vh" width="50vw" src="<?= ($BASE) ?>/views/images/judge.png"> <strong><?= ($judgeinfo['judge_name']) ?></strong> </a>
     <form class="form-inline">
         <a class="nav-item nav-link" href="" style="border-left: 1px solid red; color: red">Sign Out</a>
     </form>
@@ -18,18 +18,18 @@
 
         <hr>
         <div class="container-fluid bg-light col-md-9">
-            <h3 class="card-title"><small class="text-muted font-weight-light">Name : </small>{{@level}}</h3>
+            <h3 class="card-title"><small class="text-muted font-weight-light">Name : </small><?= ($level) ?></h3>
             <div class="row">
-                <repeat group="{{ @compLevels }}" value="{{ @compLevel}}">
+                <?php foreach (($compLevels?:[]) as $compLevel): ?>
                     <div class="col-md-6 mt-3 mb-3">
-                        <div class="card" id="{{@compLevel['level']}}">
-                            <h5 class="card-header bg-dark text-white">{{@compLevel['level']}}</h5>
+                        <div class="card" id="<?= ($compLevel['level']) ?>">
+                            <h5 class="card-header bg-dark text-white"><?= ($compLevel['level']) ?></h5>
                             <div class="card-body">
                                 <strong style="color: black">Status :
-                                    <check if="{{@compLevel['active'] == '1'}}">
-                                        <true><span style="color: green">Active</span></true>
-                                        <false><span style="color: #e74c3c">Not Active</span></false>
-                                    </check>
+                                    <?php if ($compLevel['active'] == '1'): ?>
+                                        <span style="color: green">Active</span>
+                                        <?php else: ?><span style="color: #e74c3c">Not Active</span>
+                                    <?php endif; ?>
                                 </strong>
                                 <br>
                                 <br>
@@ -37,7 +37,7 @@
                             </div>
                         </div>
                     </div>
-                </repeat>
+                <?php endforeach; ?>
             </div>
         </div>
 </body>
