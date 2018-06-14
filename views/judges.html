@@ -34,17 +34,17 @@
                 </div>
 
                 <repeat group="{{@judges}}" value="{{@judge}}">
-                    <div class="form-group row m-0 border border-secondary p-2 pt-3 mb-2">
-                        <div class="col-6">
-                            <p class="h5 font-weight-light">{{(@judge)['judge_name']}}</p>
+                    <check if="@judge['admin'] == 0">
+                        <div class="form-group row m-0 border border-secondary p-2 pt-3 mb-2">
+                            <div class="col-6">
+                                <p class="h5 font-weight-light">{{(@judge)['judge_name']}}</p>
+                            </div>
+                            <div class="col-6 text-right">
+                                <button id="{{(@judge)['id']}}" class="delete-judge btn-sm rounded-0 btn-danger">Delete</button>
+                            </div>
                         </div>
-                        <div class="col-6 text-right">
-                            <button id="{{(@judge)['id']}}" class="delete-judge btn-sm rounded-0 btn-danger">Delete</button>
-                        </div>
-                    </div>
-
+                    </check>
                 </repeat>
-
             </div>
         </div>
     </div>

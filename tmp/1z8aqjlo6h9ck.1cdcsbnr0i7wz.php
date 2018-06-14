@@ -8,10 +8,6 @@
     <link rel="stylesheet" href="<?= ($BASE) ?>/views/styles/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Create Competition</title>
-
-    <style>
-
-    </style>
 </head>
 <body>
 <div id="overlay" class="text-white font-weight-light text-center"></div><!--success message-->
@@ -39,7 +35,6 @@
                 </button>
             </div> <!--modal header-->
 
-            <!--<form action="" method="post">-->
             <div class="modal-body">
                 <div class="row">
                     <div class="col-8">
@@ -64,24 +59,11 @@
                         <button id="import" class="btn btn-block btn-primary">Add All</button>
                     </div>
                 </div>
+
                 <div id="display-list">
-                    <!--<div class="form-group row">-->
-                        <!--<div class="col-md-3">-->
-                            <!--<label><small>Name:</small></label>-->
 
-                        <!--</div>-->
-                        <!--<div class="col-md-3">-->
-                            <!--<label><small>Birth Date:</small></label>-->
-
-                        <!--</div>-->
-                        <!--<div class="col-md-3">-->
-                            <!--<label><small>Gender:</small></label>-->
-
-                        <!--</div>-->
-                    <!--</div>-->
-                </div>
+                </div> <!--display fetched participants list here-->
             </div>
-            <!--</form>-->
         </div>
     </div>
 </div> <!--import participant model-->
@@ -92,9 +74,13 @@
         <div class="col">
             <div class="form-group row">
                 <div class="col-md-6 offset-md-3 mt-2">
-                    <?php if (!isset($GET['addMore'])): ?>
-                        <input name="comp-name" type="text" class="form-control font-weight-light border border-primary" value="<?= (@$_SESSION['form']['comp-name']) ?>" placeholder="Enter name of the competition">
-                    <?php endif; ?>
+                        <span class="font-wright-light text-danger float-right"><small id="comp-name"></small></span>
+                        <input name="comp-name" type="text" class="form-control font-weight-light border border-primary"
+                               <?php if (isset($GET['addMore'])): ?>
+                                    id='<?= ($GET['id']) ?>' value="<?= ($GET['addMore']) ?>" disabled
+                                   <?php else: ?> value="<?= (@$_SESSION['form']['comp-name']) ?>" 
+                               <?php endif; ?>
+                        placeholder="Enter name of the competition">
                 </div>
             </div> <!--competition name-->
 
@@ -105,6 +91,7 @@
                             <div class="form-group row">
                                 <div class="col">
                                     <small><label class="font-weight-light text-primary">Select level for competition</label></small>
+                                    <span class="font-wright-light text-danger float-right"><small id="selected-level"></small></span>
                                     <select id="select-level" name="selected-level" class="form-control text-white bg-secondary font-weight-light">
                                         <option value="none">--Select Level--</option>
                                         <?php foreach (($levels?:[]) as $level): ?>
@@ -130,6 +117,7 @@
                             <div class="form-group row">
                                 <div class="col">
                                     <small><label class="font-weight-light text-primary">Select judges for competition</label></small>
+                                    <span class="font-wright-light text-danger float-right"><small id="judges"></small></span>
                                     <hr class="mt-0">
                                     <div class="row">
                                         <?php foreach (($judges?:[]) as $judge): ?>
@@ -157,6 +145,7 @@
 
                             <div class="form-group row">
                                 <div class="col">
+                                    <span class="font-wright-light text-danger float-right"><small id="add-participant"></small></span>
                                     <a href="<?= ($BASE) ?>/add-participant"><button type="button" class="btn btn-success btn-block font-weight-light next-page"><i class="fa fa-group"></i> Add participants manually</button></a>
                                 </div>
                             </div> <!--add participant manually-->

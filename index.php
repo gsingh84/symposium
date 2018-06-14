@@ -29,7 +29,7 @@
         session_start();
         unset($_SESSION['form']);
 
-        if (!isset($_SESSION['signed-in'])) {
+        if (!isset($_SESSION['admin-in'])) {
             $f3->reroute('/sign-in');
         }
 
@@ -51,7 +51,7 @@
         session_start();
 
         if (!isset($_SESSION['signed-in'])) {
-            $f3->reroute('/sign-in');
+            $f3->reroute('/admin-in');
         }
 
         //get all levels and judges list
@@ -217,7 +217,7 @@
             array_push($compLevelsArray, $item["level"]);
         }
 
-        print_r($levels);
+//        print_r($levels);
 
         //        print_r($levels);
         $f3->set('compLevels', $levels);
@@ -282,8 +282,6 @@
         for ($i = 0; $i < sizeof($criteria); $i++)
         {
             $scored = checkIfSored($level,$criteria[$i]['id']);
-
-            $scored = checkIfSored($level,$criteria[$i]['id']);
             if (empty($scored))
             {
                 $info->insertScore(array($level, $criteria[$i]['id'],0));
@@ -308,7 +306,6 @@
                     updateScore($level,$criteria[$i]['id'],$_POST[$postVal]);
                 }
             }
-//            print_r($_c);
             insertComment($level,$_POST['comments']);
 
             $reroute = 'http://asingh.greenriverdev.com/355/symposium/participant/'.$levelid;
@@ -316,6 +313,8 @@
         }
         $scores = getScoresBypid($level);
         $f3->set('scores', $scores);
+
+        print_r($participant);
 
         $template = new Template();
          //render
@@ -524,7 +523,8 @@
     //list of levels
     $f3->route('GET|POST /sign-in', function($f3, $params){
         session_start();
-        unset($_SESSION['signed-in']);
+        unset($_SESSION['admin-in']);
+        unset($_SESSION['judge-in']);
         $db = new Database();
 
         if (isset($_POST['submit'])) {
@@ -558,11 +558,12 @@
                 //login if success
                 if ($success) {
                     $_SESSION["judgeinfo"] = $judge_info;
-                    $_SESSION['signed-in'] = "success";
-                    if ($admin != 0)
-                        echo "./";
-                    else
-                        echo "./judge/".$judge_id;
+                    if ($admin != 0) {
+                        $_SESSION['admin-in'] = "success"; echo "./";
+                    }
+                    else {
+                        $_SESSION['judge-in'] = "success"; echo "./judge/" . $judge_id;
+                    }
                     return;
                 } else
                     $errors['error-msg'] = "Incorrect user name or password!";

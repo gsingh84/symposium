@@ -8,24 +8,6 @@
     <link rel="stylesheet" href="{{@BASE}}/views/styles/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>All Competitions</title>
-
-    <style>
-        .card {
-            border-top: 5px solid #A9CCE3;
-            border-radius: 0;
-        }
-
-        .card:hover {
-            transition-property: all;
-            transition-duration: 0.5s;
-            background-color: #A9DFBF;
-        }
-
-        .card-link, .card-link:hover {
-            text-decoration: none;
-            color: black;
-        }
-    </style>
 </head>
 
 <body>
@@ -34,8 +16,19 @@
         <a style="margin-left: 5px;" class="navbar-brand" href="{{@BASE}}"> <img id="brand-icon" src="{{@BASE}}/views/images/admin.svg"> <span id="brand-head">Admin</span></a>
     </div>
 
-    <div class="navbar-nav ml-md-auto">
-        <a class="nav-item nav-link item" href="./create" style="padding-right: 20px;"><i class="fa fa-file-text"></i> Create Competition</a>
+    <!--<div class="navbar-nav ml-md-auto">-->
+        <!--<a class="nav-item nav-link item" href="./create" style="padding-right: 20px;"><i class="fa fa-file-text"></i> Create Competition</a>-->
+    <!--</div>-->
+
+    <div class="navbar-nav ml-auto">
+        <div class="dropdown mr-5">
+            <span id="menu"><i id="fa" class="fa fa-bars text-primary"></i> Menu</span>
+            <div class="dropdown-content">
+                <a href="./create"><div class="drop-item"><p class="h6 font-weight-light"><i class="fa fa-plus"></i> Create Competition</p></div></a>
+                <a href="./levels"><div class="drop-item"><p class="h6 font-weight-light"><i class="fa fa-tasks"></i> Manage Levels</p></div></a>
+                <a href="./judges"><div class="drop-item"><p class="h6 font-weight-light"><i class="fa fa-users"></i> Manage Judges</p></div></a>
+            </div>
+        </div>
     </div>
 
     <div id="myContent">
@@ -76,4 +69,9 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
 </body>
 <script src="//code.jquery.com/jquery.js"></script>
+<script>
+    $("#menu , .drop-item").hover(function () {
+        $("#fa").toggleClass("fa fa-bars fa fa-angle-down");
+    });
+</script>
 </html>

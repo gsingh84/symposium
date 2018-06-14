@@ -38,20 +38,6 @@
             <?php endforeach; ?>
         </div>
     </div>
-
-        <!--<div class="container col-md-8">-->
-            <!--<div class="row">-->
-                <!--<?php foreach (($competitions?:[]) as $competition): ?>-->
-                    <!--<div class="col-md-3 mt-4">-->
-                        <!--<div class="card" style="width: 18rem;" id="<?= ($competition) ?>">-->
-                            <!--<div class="card-body">-->
-                                <!--<h5 class="card-title"><small class="text-muted font-weight-light">Competetion : </small><?= ($competition) ?></h5>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--<?php endforeach; ?>-->
-            <!--</div>-->
-        <!--</div>-->
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -63,7 +49,7 @@
     var judgeid = $("strong").attr('id');
     $(".card").click(function () {
         var selected = this.id;
-        var selected = "http://asingh.greenriverdev.com/355/symposium/judge/" + judgeid + "/" + selected;
+        var selected = judgeid + "/" + selected;
         location.href = selected;
     });
 </script>
