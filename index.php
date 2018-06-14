@@ -247,8 +247,6 @@
         $f3->set('colspansize',$colspansize);
 
 
-//        $participants = getParticipants($levelId);
-
         $f3->set('participants',$participants);
 
         $template = new Template();
@@ -269,16 +267,13 @@
         $levelid = $participant['level_id'];
 
         $info = new Database();
-//        $scores = new Aray();
 
-        //get the criteria from the database
         $criteria = $info->getCriteriaByLevelId($levelid);
         $leveldetails = $info->getLevelById($levelid);
 
         $leveldetails = $leveldetails[0];
         $f3->set('criteria',$criteria);
         $f3->set('leveldetails', $leveldetails);
-//        print_r($criteria);
 
         if (isset($_POST['submit']))
         {
@@ -290,7 +285,6 @@
                 $info->insertScore(array($level, $criteria[$i]['id'],$_POST[$postVal]));
             }
         }
-//        print_r($_POST);
 
         $template = new Template();
          //render
