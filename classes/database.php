@@ -239,6 +239,33 @@ class Database extends DbObject
         return $this->insert($tableName, $columns, $data);
     }
 
+    /**
+     * Insert scores
+     * @param $data
+     * @return PDOStatement
+     */
+    function insertScore($data)
+    {
+        $tableName = "scores";
+        $columns = array("participant_id","criteria_id", "score");
+        return $this->insert($tableName, $columns, $data);
+    }
+
+    /**
+     * Get all the scores
+     * @return array of all the ecores
+     */
+
+    function getScores()
+    {
+        $tableName = "scores";
+        $options = array();
+
+        $result = $this->select($tableName, $options);
+
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     function insertJudge_level_comp_ids($data)
     {
         $tableName = "judges_levels";

@@ -316,6 +316,7 @@ function insertJudge($name){
     return $id;
 }
 
+
 // delete judge
 function deleteJudge($id){
     //define query

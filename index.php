@@ -81,6 +81,7 @@
                     $comp_id = $db->insertCompetition(array($_POST['comp-name']));
                 }
 
+
                 $level_id = $_POST['selected-level'];
                 //insert selected judges
                 foreach ($_POST['judges'] as $judge_id) {
@@ -232,9 +233,21 @@
         $level = $params['level'];
 
         $levelId = getLevelid($level);
-        $levelId = $levelId['id'];
 
+        $levelId = $levelId['id'];
         $participants = getParticipants($levelId);
+
+        $info = new Database();
+
+        $scores = $info->getScores();
+        $f3->set('scores',$scores);
+        $colspansize = sizeof($scores) + 1;
+
+        $f3->set('scores',$scores);
+        $f3->set('colspansize',$colspansize);
+
+
+//        $participants = getParticipants($levelId);
 
         $f3->set('participants',$participants);
 
@@ -252,28 +265,32 @@
         $participant = getParticipant($level);
         $f3->set('participant',$participant);
 
+
         $levelid = $participant['level_id'];
 
         $info = new Database();
+//        $scores = new Aray();
 
         //get the criteria from the database
         $criteria = $info->getCriteriaByLevelId($levelid);
+        $leveldetails = $info->getLevelById($levelid);
 
+        $leveldetails = $leveldetails[0];
         $f3->set('criteria',$criteria);
+        $f3->set('leveldetails', $leveldetails);
+//        print_r($criteria);
 
         if (isset($_POST['submit']))
         {
-            $question1 = $_POST['Passing'];
-            $question2 = $_POST['dancing'];
-            $question3 = $_POST['delivery'];
-            $question4 = $_POST['eye-contact'];
-            $question5 = $_POST['voice'];
-            $question6 = $_POST['language'];
-            $question7 = $_POST['effectiveness'];
-
-
+            for ($i = 0; $i < sizeof($criteria); $i++)
+            {
+                $postVal = $criteria[$i]['criteria'];
+                $postVal = str_replace(' ', '_', $postVal);
+                echo $criteria[$i]['id'];
+                $info->insertScore(array($level, $criteria[$i]['id'],$_POST[$postVal]));
+            }
         }
-
+//        print_r($_POST);
 
         $template = new Template();
          //render
