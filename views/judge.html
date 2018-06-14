@@ -54,12 +54,11 @@
                                     <td class="clickable">{{@score['score']}}</td>
                                 </true>
                                 <false>
-                                    <td class="clickable"></td>
+                                    <td class="p"></td>
                                 </false>
-                            <!--<td class="border text-center pl-0 pr-0 bg-light submit"><small><strong>Submit</strong></small></td>-->
                             </check>
                         </repeat>
-                        <td class="border text-center pl-0 pr-0 bg-light submit"><small><strong>Submit</strong></small></td>
+                        <td class="border text-center pl-0 pr-0 bg-light submit submitbutton" id="{{@participant['id']}}sub"><small><strong>Submit</strong></small></td>
                     </tr>
                 </repeat>
                 </tbody>
@@ -104,5 +103,6 @@
 
         location.href = selected;
     });
+
 </script>
 </html>

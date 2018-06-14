@@ -233,10 +233,11 @@
 
         $scores = $info->getScores();
         $f3->set('scores',$scores);
+        $colspansize = sizeof($scores) + 1;
 
-
-//        print_r($scores);
         $f3->set('scores',$scores);
+        $f3->set('colspansize',$colspansize);
+
 
 //        $participants = getParticipants($levelId);
 
