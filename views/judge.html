@@ -30,11 +30,15 @@
                 <tr>
                     <th scope="col" style="background-color: lightyellow">#</th>
                     <th scope="col" class="bg-light">First Name</th>
-                    <th scope="col" class="bg-light">Last Name</th>
-                    <th scope="col" class="bg-light border-left">Q1</th>
+                    <th scope="col" class="bg-light border-right">Last Name</th>
+                    <th scope="col" class="bg-light">Q1</th>
                     <th scope="col" class="bg-light">Q2</th>
                     <th scope="col" class="bg-light">Q3</th>
-                    <th scope="col" colspan="2" class="bg-light">Q4</th>
+                    <th scope="col" class="bg-light">Q4</th>
+                    <th scope="col" class="bg-light">Q4</th>
+
+                    <th scope="col" class="bg-light"></th>
+
                 </tr>
                 </thead>
                 <tbody>
@@ -43,12 +47,19 @@
                         <th scope="row" id="row" style="background-color: lightyellow; width: 6%">{{@participant['id']}}</th>
                         <td class="clickable">{{@participant['first_name']}}</td>
                         <td class="clickable border-right"> {{@participant['last_name']}}</td>
-                        <td class="clickable">10</td>
-                        <td class="clickable">20</td>
-                        <td class="clickable">30</td>
-                        <td class="clickable">12</td>
-                        <td class="border text-center pl-0 pr-0 bg-light submit"><small><strong>Submit</strong></small></td>
 
+                        <repeat group = "{{ @scores}}" value="{{@score}}">
+                            <check if="{{ @score['participant_id'] == @participant['id'] }}">
+                                <true>
+                                    <td class="clickable">{{@score['score']}}</td>
+                                </true>
+                                <false>
+                                    <td class="clickable"></td>
+                                </false>
+                            <!--<td class="border text-center pl-0 pr-0 bg-light submit"><small><strong>Submit</strong></small></td>-->
+                            </check>
+                        </repeat>
+                        <td class="border text-center pl-0 pr-0 bg-light submit"><small><strong>Submit</strong></small></td>
                     </tr>
                 </repeat>
                 </tbody>
