@@ -1,6 +1,6 @@
 <?php
 //    require_once '/home2/fastwebg/symposiumConfig.php';
-require_once '/home/asinghgr/config.php';
+require_once '/home/gsinghgr/config.php';
 
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
