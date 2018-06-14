@@ -1,0 +1,28 @@
+body {
+    background-color: white;
+}
+.box {
+    background-color: white;
+    border-radius: 5px;
+    margin-top: 25%;
+    padding: 30px;
+    padding-top: 40px;
+    box-shadow: 0 -0.5px 3px 0 rgba(0, 0, 0, 0.2), 0 2px 3px 0 rgba(0, 0, 0, 0.19);
+}
+
+input {
+    transition-property: all;
+    transition-duration: 0.5s;
+    width: 100%;
+    padding: 8px;
+    padding-left: 12px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    background-color: #D5DBDB;
+    outline: none;
+}
+
+input:focus {
+    border: 1px solid blue;
+    background-color: white;
+}

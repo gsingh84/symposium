@@ -44,7 +44,6 @@ $("form").on("submit", function (event) {
             }
             //show success message
             success_msg(msg);
-
         }
     });
 });

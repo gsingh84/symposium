@@ -8,9 +8,6 @@
 
 class Database extends DbObject
 {
-    //table's column names
-//    protected $participants_cols = array('first_name', 'last_name', 'dob', 'gender');
-
     /**
      * Update participant's information
      * @param $data
@@ -216,6 +213,20 @@ class Database extends DbObject
     }
 
     /**
+     * Get scores by participant id
+     * @param $id
+     * @return array
+     */
+    function getScoresByParticipantId($id) {
+        $tableName = "scores";
+        $options = array("participant_id" => $id);
+
+        $result = $this->select($tableName, $options);
+
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
      * Insert name of competition
      * @param $data
      * @return PDOStatement
@@ -325,16 +336,18 @@ class Database extends DbObject
     private function generateUsername($data)
     {
         //remove white space
-        $name = str_replace(' ', '', $data[0]);
-        $randomString = "";
+        $name = explode(" ", $data[0]);
+        $username = "";
 
-        //create user name by selecting random letters from judge name
-        for($i = 0; $i < 5; $i++) {
-            $randomString .= $name[rand(0, strlen($name) - 1)];
-        }
+        if (sizeof($name) > 1) {
+            //create user name by selecting first name and last initial from judge name
+            $username .= substr($name[1],0,1);
+            $username .= $name[0];
+        } else
+            $username .= $data[0];
 
         //return username
-        return strtolower($randomString);
+        return strtolower($username);
     }
 
     //Method for generating password for judge

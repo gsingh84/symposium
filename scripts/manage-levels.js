@@ -32,9 +32,11 @@ $(document).ready(function () {
                     $.each(result[i], function(key, val) {
                         if (key == "criteria") {
                             question = val;
+                            questions.push(question);
                         }
                         if (key == "weight") {
                             weight = val;
+                            questions.push(weight);
                         }
                         if (key == "content_ques") {
                             if (val == 0) {
@@ -42,11 +44,13 @@ $(document).ready(function () {
                                 isContent = 0;
                             } else
                                 isContent = 1;
+                            questions.push(isContent);
                         }
                     });
 
                     //push imported question to array
-                    questions.push({ques: question, weigh: weight, isQues: isContent});
+                    // questions.push({ques: question, weigh: weight, isQues: isContent});
+                    questions.push("||");
                     $("#imported-questions").append("<div class=\"form-group row\">\n" +
                         "                                            <div class=\"col-md-9\">\n" +
                         "                                                <small><label class=\"font-weight-light text-muted\">"+ label +": </label></small>\n" + question +
@@ -126,7 +130,6 @@ $(document).ready(function () {
         }
     });
 
-    var level_id = "";
     //submit level and question data
     $("form").on("submit", function(event){
         event.preventDefault();
@@ -134,11 +137,17 @@ $(document).ready(function () {
         var data = $('form').serializeArray();
         data.push({name:'submit', value:'clicked'});
 
+        if ($("#select-from").val() != "none") {
+            data.push({name:'im_questions', value:questions});
+        }
+
         // send level name and questions data
         $.post("./levels", data, function(response){
 
             response = JSON.parse(response);
+            console.log(jQuery.type(response));
             console.log(response);
+
             //check type of response we get from php
             if (jQuery.type(response) == "object") {
                 //loop over the object and append the error text
@@ -146,15 +155,12 @@ $(document).ready(function () {
                     $("#" + key).css("border", value);
                 });
             } else {
-                level_id = response;
                 $('form').find("input[type=text]").val("");
-                // window.history.back();
+                $("#select-from").val('none');
+                questions = []; $("#imported-questions").html('');
+                window.history.back();
             }
         });
-        //send imported questions data
-        // send(level_id, questions) ;
-        console.log(level_id);
-        questions = []; $("#imported-questions").html('');
     });
 
     //disable level

@@ -6,7 +6,7 @@
     //Require the files (fat-free)
     require_once('vendor/autoload.php');
 
-    require_once '/home/asinghgr/config.php';
+    require_once '/home/gsinghgr/config.php';
     require_once "models/dbFunctions.php";
 
 
@@ -27,7 +27,11 @@
     $f3->route('GET|POST /', function($f3){
 
         session_start();
-        session_unset();
+        unset($_SESSION['form']);
+
+        if (!isset($_SESSION['signed-in'])) {
+            $f3->reroute('/sign-in');
+        }
 
         $db = new Database();
         $competitions = $db->getCompAndLevels("competitions.id");
@@ -45,6 +49,10 @@
     $f3->route('GET|POST /create', function ($f3)
     {
         session_start();
+
+        if (!isset($_SESSION['signed-in'])) {
+            $f3->reroute('/sign-in');
+        }
 
         //get all levels and judges list
         $db = new Database();
@@ -126,7 +134,7 @@
 
         $template = new Template();
         //render
-        echo $template->render('views/add-participant2.html');
+        echo $template->render('views/add-participant.html');
     });
 
     $f3->route('GET|POST /judge', function ($f3)
@@ -147,7 +155,7 @@
 
             $_SESSION["judgeinfo"] = $id;
 
-            $location = 'Location: http://asingh.greenriverdev.com/355/symposium/judge/'.$judgeid;
+            $location = 'Location: ./symposium/judge/'.$judgeid;
             header($location);
         }
 
@@ -310,13 +318,10 @@
             require_once "models/validateLevels.php";
 
             if ($success) {
-                $id = "";
-                if (!isset($_POST['im_questions'])) {
-                    //insert level name first and get id
-                    $id = $db->insertLevel(array($_POST['level-name'], floatval($_POST['time-allowed'])));
-                    echo $id;
-                }
+                //insert level
+                $id = $db->insertLevel(array($_POST['level-name'], floatval($_POST['time-allowed'])));
 
+                //insert newly added questions
                 if (!empty($_POST['c-ques'][0]) || !empty($_POST['p-ques'][0])) {
                     $index = 0;
                     while ($index < sizeof($_POST['c-ques'])) {
@@ -342,26 +347,26 @@
                         $index++;
                     }
                 }
-            }
 
-//            $_POST = array(); //clear form data after inserting
-            return;
-        }
+                //insert imported questions from existing levels
+                if (isset($_POST['im_questions'])) {
+                    $array = array();
+                    $questions = explode(",", $_POST['im_questions']);
 
-        //insert imported questions from existing levels
-        if (isset($_POST['im_questions'])) {
-            foreach ($_POST['im_questions'] as $questions) {
-                $array = array();
-                foreach ($questions as $key => $val) {
-                    if ($key == "weigh") {
-                        array_push($array, $_POST['im_level']);
+                    foreach ($questions as $question) {
+                        if ($question == "||") {
+                            $db->insertCriteria(array($array[0], $id, $array[1], $array[2]));
+                            $array = array();
+                        }
+                        if ($question != "||")
+                            array_push($array, $question);
                     }
-                    array_push($array, $val);
                 }
-                $db->insertCriteria($array);
+                echo $id; //return id to ajax call
             }
             return;
         }
+
 
         $template = new Template();
         //render
@@ -422,7 +427,51 @@
     $f3->route('GET|POST /participants/@comp_id/@level_id', function($f3, $params){
         //get all participants by levels and competitions
         $db = new Database();
-        $f3->set('participants', $db->getParticipantByLevelAndComp($params['comp_id'], $params['level_id']));
+        $participants = $db->getParticipantByLevelAndComp($params['comp_id'], $params['level_id']);
+
+        //loop over participants list
+        for ($i = 0; $i < sizeof($participants); $i++) {
+            //get scores
+            $scores = $db->getScoresByParticipantId($participants[$i]['id']);
+            $total = 0;
+
+            //get scores
+            foreach ($scores as $score) {
+                $total = $total + $score['score'];
+            }
+
+            //set rank
+            if (sizeof($scores) > 0) {
+                $participants[$i]['rank'] = $total;
+            } else
+                $participants[$i]['rank'] = "--";
+        }
+
+        //sort participants based on highest scores
+        usort($participants, function($a, $b) {
+            if($a['rank']==$b['rank']) return 0;
+            return $a['rank'] < $b['rank']?1:-1;
+        });
+
+        $prev = -1; $rank = 1;
+        //add participant ranking based on highest scores
+        for ($i = 0; $i < sizeof($participants); $i++) {
+            if ($participants[$i]['rank'] != "--") {
+
+                //check if participants have same scores
+                if ($participants[$i]['rank'] == $prev) {
+                    $rank--;
+                    $participants[$i]['rank'] = $rank;
+                } else {
+                    $prev = $participants[$i]['rank'];
+                    $participants[$i]['rank'] = $rank;
+                }
+                $rank++;
+            }
+        }
+
+        //set
+        $f3->set('participants', $participants);
 
         //update participant name
         if(isset($_POST['p-id'])) {
@@ -443,6 +492,53 @@
 
     //list of levels
     $f3->route('GET|POST /sign-in', function($f3, $params){
+        session_start();
+        unset($_SESSION['signed-in']);
+        $db = new Database();
+
+        if (isset($_POST['submit'])) {
+            //store all errors
+            $errors = array("error-msg" => "", "username" => "", "password" => "");
+            $valid = true;
+
+            //make sure user and password is not empty
+            if (empty($_POST['username'])) {
+                $errors['username'] = "1px solid red";
+                $valid = false;
+            }
+            if (empty($_POST['password'])) {
+                $errors['password'] = "1px solid red";
+                $valid = false;
+            }
+
+            //validate username and password
+            if ($valid) {
+                $users = $db->getJudges();
+                $success = false; $admin = 0; $judge_id = 0; $judge_info = "";
+                //loop over all users for validating username and password
+                foreach ($users as $user) {
+                    if ($_POST['username'] == $user['username'] &&
+                        $_POST['password'] == $user['password']) {
+                        $success = true; $admin = $user['admin']; $judge_id = $user['id'];
+                        $judge_info = $user;
+                        break;
+                    }
+                }
+                //login if success
+                if ($success) {
+                    $_SESSION["judgeinfo"] = $judge_info;
+                    $_SESSION['signed-in'] = "success";
+                    if ($admin != 0)
+                        echo "./";
+                    else
+                        echo "./judge/".$judge_id;
+                    return;
+                } else
+                    $errors['error-msg'] = "Incorrect user name or password!";
+            }
+            echo json_encode($errors);
+            return;
+        }
 
         //render
         $template = new Template();

@@ -94,8 +94,8 @@
                                 {{ @participant['dob'] }}
                             </div>
                             <div class="col-md-2">
-                                <small class="text-muted">Gender:</small><br>
-                                {{ @participant['gender'] }}
+                                <small class="text-muted">Rank:</small><br>
+                                {{ @participant['rank'] }}
                             </div>
                             <div class="col-md-3 text-right">
                                 <button id="delete-{{@participant['id']}}" class="btn-sm btn-outline-danger rounded-0 mt-2 del-btn"><i class="fa fa-trash-o"></i> Delete</button>
@@ -111,7 +111,7 @@
                                 <small class="text-muted">First name:</small><br>
                                 <input name="first_name" type="text" class="form-control font-weight-light" value="{{ @participant['first_name'] }}">
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <small class="text-muted">Last name:</small><br>
                                 <input name="last_name" type="text" class="form-control font-weight-light" value="{{ @participant['last_name'] }}">
                             </div>
@@ -119,11 +119,8 @@
                                 <small class="text-muted">Birth date:</small><br>
                                 <input name="dob" type="text" class="form-control font-weight-light" value="{{ @participant['dob'] }}">
                             </div>
-                            <div class="col-md-2">
-                                <small class="text-muted">Gender:</small><br>
-                                <input name="gender" type="text" class="form-control font-weight-light" value="{{ @participant['gender'] }}">
-                            </div>
-                            <div class="col-md-2 text-right">
+
+                            <div class="col-md-3 text-right">
                                 <button id="update-{{@participant['id']}}" type="button" class="btn btn-success mt-3 rounded-0 update-btn"><i class="fa fa-refresh"></i> Update</button>
                             </div>
                         </div>
