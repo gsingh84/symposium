@@ -25,20 +25,15 @@
                 <thead style="">
                 <tr>
                     <th colspan="3" class="border" scope="col" style="background-color: lightyellow">Name</th>
-                    <th colspan="5" scope="col" class="border" style="background-color: lightyellow">Scores</th>
+                    <th colspan="{{@colspansize}}" scope="col" class="border" style="background-color: lightyellow">Scores</th>
                 </tr>
                 <tr>
                     <th scope="col" style="background-color: lightyellow">#</th>
                     <th scope="col" class="bg-light">First Name</th>
                     <th scope="col" class="bg-light border-right">Last Name</th>
-                    <th scope="col" class="bg-light">Q1</th>
-                    <th scope="col" class="bg-light">Q2</th>
-                    <th scope="col" class="bg-light">Q3</th>
-                    <th scope="col" class="bg-light">Q4</th>
-                    <th scope="col" class="bg-light">Q4</th>
-
-                    <th scope="col" class="bg-light"></th>
-
+                    <repeat group = "{{ @criteria}}" value="{{@cri}}">
+                        <th scope="col" class="bg-light" style=""><small>{{@cri['criteria']}}</small></th>
+                    </repeat>
                 </tr>
                 </thead>
                 <tbody>
@@ -58,7 +53,7 @@
                                 </false>
                             </check>
                         </repeat>
-                        <td class="border text-center pl-0 pr-0 bg-light submit submitbutton" id="{{@participant['id']}}sub"><small><strong>Submit</strong></small></td>
+                        <!--<td class="border text-center pl-0 pr-0 bg-light submit submitbutton" id="{{@participant['id']}}sub"><small><strong>Submit</strong></small></td>-->
                     </tr>
                 </repeat>
                 </tbody>
@@ -75,6 +70,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script>
+    $(".p").hide();
     $(".judge").hide();
     range = $('.slider > .range');
     value = $('.slider > .value');

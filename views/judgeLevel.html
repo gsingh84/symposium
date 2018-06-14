@@ -22,7 +22,7 @@
             <div class="row">
                 <repeat group="{{ @compLevels }}" value="{{ @compLevel}}">
                     <div class="col-md-6 mt-3 mb-3">
-                        <div class="card" id="{{@compLevel['level']}}">
+                        <div class="card" id="{{@compLevel['id']}}">
                             <h5 class="card-header bg-dark text-white">{{@compLevel['level']}}</h5>
                             <div class="card-body">
                                 <strong style="color: black">Status :
@@ -50,7 +50,8 @@
 <script>
     $(".card").click(function () {
         var selected = this.id;
-        var selected = "http://asingh.greenriverdev.com/355/symposium/participant/" +  selected;
+        selected = selected.split(' ').join('');
+        selected = "http://asingh.greenriverdev.com/355/symposium/participant/" +  selected;
         location.href = selected;
     });
 </script>
