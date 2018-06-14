@@ -98,8 +98,8 @@
     $(".clickable").on('click', function (e) {
         var selected = $(e.currentTarget).parent().attr("data-val");
         // alert(selected);
-        var selected = "http://asingh.greenriverdev.com/355/symposium/score/" + selected;
-        // var selected = "http://asingh.greenriverdev.com/355/symposium/" + selected;
+        // var selected = "./score/" + selected;
+        var selected = "http://gsingh.greenriverdev.com/355/symposium/score/" + selected;
 
         location.href = selected;
     });

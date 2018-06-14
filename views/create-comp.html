@@ -120,16 +120,18 @@
                                     <hr class="mt-0">
                                     <div class="row">
                                         <repeat group="{{@judges}}" value="{{@judge}}">
-                                            <div class="col-md-4">
-                                                <div class="form-check form-check-inline">
-                                                    <label class="form-check-label">
-                                                        <input name="judges[]" class="form-check-input" type="checkbox" value="{{@judge['id']}}"
-                                                        <repeat group="{{@$_SESSION['form']['judges']}}" value="@selected">
-                                                            <check if="@judge['id'] == @selected">checked</check>
-                                                        </repeat>> {{@judge['judge_name']}}
-                                                    </label>
+                                            <check if="@judge['admin'] == 0">
+                                                <div class="col-md-4">
+                                                    <div class="form-check form-check-inline">
+                                                        <label class="form-check-label">
+                                                            <input name="judges[]" class="form-check-input" type="checkbox" value="{{@judge['id']}}"
+                                                            <repeat group="{{@$_SESSION['form']['judges']}}" value="@selected">
+                                                                <check if="@judge['id'] == @selected">checked</check>
+                                                            </repeat>> {{@judge['judge_name']}}
+                                                        </label>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            </check>
                                         </repeat>
                                     </div>
                                 </div>
