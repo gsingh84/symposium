@@ -50,8 +50,8 @@
     {
         session_start();
 
-        if (!isset($_SESSION['signed-in'])) {
-            $f3->reroute('/admin-in');
+        if (!isset($_SESSION['admin-in'])) {
+            $f3->reroute('/sign-in');
         }
 
         //get all levels and judges list
