@@ -6,7 +6,7 @@
     //Require the files (fat-free)
     require_once('vendor/autoload.php');
 
-    require_once '/home/gsinghgr/config.php';
+    require_once '/home/asinghgr/config.php';
     require_once "models/dbFunctions.php";
 
 
@@ -217,6 +217,8 @@
             array_push($compLevelsArray, $item["level"]);
         }
 
+//        print_r($levels);
+
         //        print_r($levels);
         $f3->set('compLevels', $levels);
         $f3->set('judgeinfo', $judgeinfo);
@@ -232,20 +234,22 @@
     {
         $level = $params['level'];
 
-        $levelId = getLevelid($level);
+        $participants = getParticipants($level);
+        $criteria = getCriteria($level);
 
-        $levelId = $levelId['id'];
-        $participants = getParticipants($levelId);
 
         $info = new Database();
 
         $scores = $info->getScores();
-        $f3->set('scores',$scores);
-        $colspansize = sizeof($scores) + 1;
 
         $f3->set('scores',$scores);
+
+        $f3->set('criteria',$criteria);
+        $colspansize = sizeof($scores) + 1;
         $f3->set('colspansize',$colspansize);
 
+
+        $criteria = getCriteria($level);
 
         $f3->set('participants',$participants);
 
@@ -275,16 +279,42 @@
         $f3->set('criteria',$criteria);
         $f3->set('leveldetails', $leveldetails);
 
+        for ($i = 0; $i < sizeof($criteria); $i++)
+        {
+            $scored = checkIfSored($level,$criteria[$i]['id']);
+            if (empty($scored))
+            {
+                $info->insertScore(array($level, $criteria[$i]['id'],0));
+            }
+        }
+
         if (isset($_POST['submit']))
         {
             for ($i = 0; $i < sizeof($criteria); $i++)
             {
+                //$level is the participant id
                 $postVal = $criteria[$i]['criteria'];
                 $postVal = str_replace(' ', '_', $postVal);
-                echo $criteria[$i]['id'];
-                $info->insertScore(array($level, $criteria[$i]['id'],$_POST[$postVal]));
+//                echo $level;
+                $scored = checkIfSored($level,$criteria[$i]['id']);
+                if (empty($scored))
+                {
+                    $info->insertScore(array($level, $criteria[$i]['id'],$_POST[$postVal]));
+                }
+                else
+                {
+                    updateScore($level,$criteria[$i]['id'],$_POST[$postVal]);
+                }
             }
+            insertComment($level,$_POST['comments']);
+
+            $reroute = 'http://asingh.greenriverdev.com/355/symposium/participant/'.$levelid;
+            $f3->reroute($reroute);
         }
+        $scores = getScoresBypid($level);
+        $f3->set('scores', $scores);
+
+        print_r($participant);
 
         $template = new Template();
          //render
@@ -399,7 +429,7 @@
         $f3->set('judges', $judges);
 
         if ($_POST['delete-judge'] > 0) {
-            deleteJudge($_POST['delete-judge']); //write delete function in database class
+            deleteJudge($_POST['delete-judge']);
         }
 
         if (!empty($_POST['insert-judge'])) {

@@ -16,42 +16,42 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-toggleable-sm bg-light py-0 text-black welcome">
-        <a class="navbar-brand"><img height="40vh" width="50vw" src="{{@BASE}}/views/images/judge.png"> <strong id="{{@judgeid}}">{{@judgeinfo['judge_name']}}</strong> </a>
-        <form class="form-inline">
-            <a class="nav-item nav-link" href="" style="border-left: 1px solid red; color: red">Sign Out</a>
-        </form>
-    </nav>
-        <hr>
+<nav class="navbar navbar-toggleable-sm bg-light py-0 text-black welcome">
+    <a class="navbar-brand"><img height="40vh" width="50vw" src="{{@BASE}}/views/images/judge.png"> <strong id="{{@judgeid}}">{{@judgeinfo['judge_name']}}</strong> </a>
+    <form class="form-inline">
+        <a class="nav-item nav-link" href="" style="border-left: 1px solid red; color: red">Sign Out</a>
+    </form>
+</nav>
+<hr>
 
-    <div class="container-fluid col-md-10 bg-light">
-        <h3>All competitons</h3>
-        <div class="row">
-            <repeat group="{{ @competitions }}" value="{{ @competition}}">
-                <div class="col-md-3">
-                    <div class="card mt-3 mb-3" id="{{@competition}}">
-                        <div class="card-body">
-                            <h5 class="card-title"><small class="text-muted font-weight-light">Name : </small>{{@competition}}</h5>
-                        </div>
+<div class="container-fluid col-md-10 bg-light">
+    <h3>All competitons</h3>
+    <div class="row">
+        <repeat group="{{ @competitions }}" value="{{ @competition}}">
+            <div class="col-md-3">
+                <div class="card mt-3 mb-3" id="{{@competition}}">
+                    <div class="card-body">
+                        <h5 class="card-title"><small class="text-muted font-weight-light">Name : </small>{{@competition}}</h5>
                     </div>
                 </div>
-            </repeat>
-        </div>
+            </div>
+        </repeat>
     </div>
+</div>
 
-        <!--<div class="container col-md-8">-->
-            <!--<div class="row">-->
-                <!--<repeat group="{{ @competitions }}" value="{{ @competition}}">-->
-                    <!--<div class="col-md-3 mt-4">-->
-                        <!--<div class="card" style="width: 18rem;" id="{{@competition}}">-->
-                            <!--<div class="card-body">-->
-                                <!--<h5 class="card-title"><small class="text-muted font-weight-light">Competetion : </small>{{@competition}}</h5>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</repeat>-->
-            <!--</div>-->
-        <!--</div>-->
+<!--<div class="container col-md-8">-->
+<!--<div class="row">-->
+<!--<repeat group="{{ @competitions }}" value="{{ @competition}}">-->
+<!--<div class="col-md-3 mt-4">-->
+<!--<div class="card" style="width: 18rem;" id="{{@competition}}">-->
+<!--<div class="card-body">-->
+<!--<h5 class="card-title"><small class="text-muted font-weight-light">Competetion : </small>{{@competition}}</h5>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</repeat>-->
+<!--</div>-->
+<!--</div>-->
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -63,7 +63,7 @@
     var judgeid = $("strong").attr('id');
     $(".card").click(function () {
         var selected = this.id;
-        var selected = "http://gsingh.greenriverdev.com/355/symposium/judge/" + judgeid + "/" + selected;
+        var selected = judgeid + "/" + selected;
         location.href = selected;
     });
 </script>

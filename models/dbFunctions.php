@@ -1,6 +1,6 @@
 <?php
 //    require_once '/home2/fastwebg/symposiumConfig.php';
-require_once '/home/gsinghgr/config.php';
+require_once '/home/asinghgr/config.php';
 
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
@@ -245,7 +245,7 @@ function getAllCompetitions($id) {
  */
 function getAllLevels($compid) {
     //get all rows from db
-    $sql = "SELECT DISTINCT levels.level, levels.active FROM levels, judges_levels WHERE level_id = levels.id AND competition_id = :compid";
+    $sql = "SELECT DISTINCT * FROM levels, judges_levels WHERE level_id = levels.id AND competition_id = :compid";
     global $dbh;
     //prepare statement
     $statement = $dbh->prepare($sql);
@@ -301,6 +301,27 @@ function getLevelid($levelName) {
     return $result;
 }
 
+/**
+ * get criteria from id
+ *
+ * @return level comp id
+ */
+function getCriteriaFromId($id) {
+    //get all rows from db
+    $sql = "SELECT * FROM criteria WHERE id = :id ";
+    global $dbh;
+    //prepare statement
+    $statement = $dbh->prepare($sql);
+    //bind params
+    $statement->bindParam(':id',$id, PDO::PARAM_INT);
+    //execute statement
+    $statement->execute();
+    //fetch all rows
+    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+    //return data
+    return $result;
+}
+
 // Insert judges
 function insertJudge($name){
     //define query
@@ -331,6 +352,90 @@ function deleteJudge($id){
     $id = $dbh->lastInsertId();
     return $id;
 }
+
+/**
+ * insert score
+ * @param $name
+ * @return string
+ */
+function updateScore($pid, $cid, $score){
+    //define query
+    $sql = "UPDATE `scores` SET `score`= :score WHERE participant_id = :pid AND criteria_id = :cid";
+    global $dbh;
+    //prepare the statement
+    $statement = $dbh->prepare($sql);
+    //bind parameters
+    $statement->bindParam(':pid', $pid, PDO::PARAM_STR);
+    $statement->bindParam(':cid', $cid, PDO::PARAM_STR);
+    $statement->bindParam(':score', $score, PDO::PARAM_STR);
+
+    //execute statement
+    $success = $statement->execute();
+    //5. Return the result
+    return $success;
+}
+
+
+/**
+ *
+ * Check if already scored or not
+ * @return
+ */
+function checkIfSored($pid, $cid) {
+    //get all rows from db
+    $sql = "SELECT * FROM `scores` WHERE participant_id = :pid AND criteria_id = :cid";
+    global $dbh;
+    //prepare statement
+    $statement = $dbh->prepare($sql);
+    //bind params
+    $statement->bindParam(':pid', $pid, PDO::PARAM_STR);
+    $statement->bindParam(':cid', $cid, PDO::PARAM_STR);    //execute statement
+    $statement->execute();
+    //fetch all rows
+    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+    //return data
+    return $result;
+}
+
+
+/**
+ * @param $name
+ * @return string
+ */
+function insertComment($id, $comment){
+    //define query
+    $sql = "UPDATE `participants` SET `comments`= :comment WHERE id = :id";
+    global $dbh;
+    //prepare the statement
+    $statement = $dbh->prepare($sql);
+    //bind parameters
+    $statement->bindParam(':id', $id, PDO::PARAM_STR);
+    $statement->bindParam(':comment', $comment, PDO::PARAM_STR);
+    //execute statement
+    $success = $statement->execute();
+    //5. Return the result
+    return $success;
+}
+
+/**
+ * get scores from participaant id
+ */
+function getScoresBypid($id) {
+    //get all rows from db
+    $sql = "SELECT * FROM scores WHERE participant_id = :id ";
+    global $dbh;
+    //prepare statement
+    $statement = $dbh->prepare($sql);
+    //bind params
+    $statement->bindParam(':id',$id, PDO::PARAM_INT);
+    //execute statement
+    $statement->execute();
+    //fetch all rows
+    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+    //return data
+    return $result;
+}
+
 
 //select competitions and levels from multiple tables
 function selectCompAndLevels($groupBy) {
