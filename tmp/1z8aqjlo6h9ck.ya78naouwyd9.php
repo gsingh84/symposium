@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
     <link rel="stylesheet" href="<?= ($BASE) ?>/views/styles/admin.css">
     <link rel="stylesheet" href="<?= ($BASE) ?>/views/styles/levels.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Manage Levels</title>
+
 </head>
 
 <body>
@@ -20,7 +22,7 @@
                         <p class="h5 font-weight-light">Manage Levels</p>
                     </div>
                     <div class="col-4 text-right">
-                        <a id="go-back" href="<?= ($BASE) ?>/create"><span class="h4">&larr; </span></a>
+                        <a id="go-back" href=""><span class="h4">&larr; </span></a>
                     </div>
                 </div>
                 <hr>
@@ -29,41 +31,128 @@
 
                     <?php if (isset($GET['addLevel'])): ?>
                         
+                        <form action="#" method="post">
                             <div id="add-level">
                                 <div class="row form-group">
-                                    <div class="col">
-                                        <label><small>Level name</small></label>
-                                        <input id="level-name" class="form-control" type="text" name="level-name">
+                                    <div class="col-md-9">
+                                        <label><small>Level name / Book name</small></label>
+                                        <input id="level-name" class="form-control font-weight-light" type="text" name="level-name">
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label><small>Time allowed</small></label>
+                                        <input id="time-allowed" class="form-control font-weight-light" type="text" name="time-allowed">
+                                    </div>
+                                </div>
+
+                                <div class='row form-group'>
+                                    <div class='col text-center'>
+                                        <button id="add-oldQues-btn" type="button" class="btn btn-link btn-block text-info">Import Questions from existing Levels</button>
+                                    </div>
+                                </div> <!--options to chose from-->
+
+                                <div id="import-from-levels">
+                                    <div class="form-group row">
+                                        <div class="col">
+                                            <small><label class="font-weight-light text-primary">Import from:</label></small>
+                                            <select id="select-from" class="form-control text-white bg-secondary font-weight-light">
+                                                <option value="none">--Select Level--</option>
+                                                <?php foreach (($levels?:[]) as $level): ?>
+                                                    <option value="<?= ($level['id']) ?>"><?= ($level['level']) ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div id="imported-questions">
+                                        <!--<div class="form-group row">-->
+                                            <!--<div class="col-md-9">-->
+                                                <!--<small><label class="font-weight-light text-muted">Content question</label></small>-->
+                                                <!--question-->
+                                            <!--</div>-->
+                                            <!--<div class="col-md-3">-->
+                                                <!--<small><label class="font-weight-light text-muted">Weight</label></small>-->
+                                                <!--weight-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    </div>
+                                </div> <!--import from existing levels field-->
+                                <hr>
+
+                                <div id="expand-criteria">
+                                    <div class="row">
+                                        <div class="col text-center">
+                                            <h4 style="cursor: pointer;"><i id="arrow" class="fa fa-angle-down"></i></h4>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div id="criteria-text">
+                                    <label><small class="text-muted">Add Content type Questions</small></label>
+
                                     <div class='row form-group'>
                                         <div class='col-9'>
-                                            <input id='cret-type' class='form-control' type='text' name='level-type' placeholder='Criteria type'>
+                                            <input class='form-control' type='text' name='c-ques[]' placeholder='Question: '>
                                         </div>
+
                                         <div class='col-3 text-right'>
-                                            <button id='confirm' class='btn btn-warning rounded-0'>Add</button>
+                                            <input class='form-control' type='text' name='c-weight[]' placeholder='Weight:'>
+                                        </div>
+                                    </div>
+
+                                    <div id="new-cont-ques"></div> <!--Content Question-->
+                                    <div class="form-group row">
+                                        <div class='col text-right'>
+                                            <button id="add-cont-ques" type="button" class='btn btn-link'>Add More</button>
+                                            <button id="rm-cont-btn" type="button" class="btn btn-link text-danger btn-link">Remove</button>
+                                        </div>
+                                    </div> <!--content type question-->
+
+                                    <label><small class="text-muted">Add Presentation Criteria</small></label>
+
+                                    <div class='row form-group'>
+                                        <div class='col-9'>
+                                            <input class='form-control' type='text' name='p-ques[]' placeholder='Criteria: '>
+                                        </div>
+
+                                        <div class='col-3 text-right'>
+                                            <input class='form-control' type='text' name='p-weight[]' placeholder='Weight:'>
+                                        </div>
+                                    </div>
+
+                                    <div id="new-p-ques"></div> <!--Presentation Question-->
+                                    <div class="form-group row">
+                                        <div class='col text-right'>
+                                            <button id='add-presentation-ques' type="button" class='btn btn-link'>Add More</button>
+                                            <button id="rm-pres-btn" type="button" class="btn btn-link text-danger btn-link">Remove</button>
+                                        </div>
+                                    </div> <!--presentation type questions-->
+                                </div><!--criteria-->
+
+                                <div id="submit-form">
+                                    <div class="form-group row mt-4">
+                                        <div class="col">
+                                            <button id="submit" type="submit" class="btn btn-outline-success btn-block rounded-0">Create</button>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div id="added"></div> <!--added levels-->
+                                <!--<div id="added"></div> &lt;!&ndash;added levels&ndash;&gt;-->
 
-                                <div id="add-rm-block">
-                                    <div class="form-group row mt-1">
-                                        <div class="col text-right">
-                                            <button id="remove-text" class="btn btn-sm bg-danger">Remove</button>
-                                        </div>
-                                    </div>
+                                <!--<div id="add-rm-block">-->
+                                    <!--<div class="form-group row mt-1">-->
+                                        <!--<div class="col text-right">-->
+                                            <!--<button id="remove-text" class="btn btn-sm bg-danger">Remove</button>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
 
-                                    <div class="form-group row mt-4">
-                                        <div class="col">
-                                            <button id="submit" class="btn btn-outline-success btn-block rounded-0">Submit</button>
-                                        </div>
-                                    </div>
-                                </div> <!--remove/submit button-->
+                                    <!--<div class="form-group row mt-4">-->
+                                        <!--<div class="col">-->
+                                            <!--<button id="submit" class="btn btn-outline-success btn-block rounded-0">Submit</button>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div> &lt;!&ndash;remove/submit button&ndash;&gt;-->
                             </div> <!--add level block-->
+                        </form>
                         
 
                         <?php else: ?>

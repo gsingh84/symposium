@@ -25,16 +25,15 @@
                 <thead style="">
                 <tr>
                     <th colspan="3" class="border" scope="col" style="background-color: lightyellow">Name</th>
-                    <th colspan="5" scope="col" class="border" style="background-color: lightyellow">Scores</th>
+                    <th colspan="<?= ($colspansize) ?>" scope="col" class="border" style="background-color: lightyellow">Scores</th>
                 </tr>
                 <tr>
                     <th scope="col" style="background-color: lightyellow">#</th>
                     <th scope="col" class="bg-light">First Name</th>
-                    <th scope="col" class="bg-light">Last Name</th>
-                    <th scope="col" class="bg-light border-left">Q1</th>
-                    <th scope="col" class="bg-light">Q2</th>
-                    <th scope="col" class="bg-light">Q3</th>
-                    <th scope="col" colspan="2" class="bg-light">Q4</th>
+                    <th scope="col" class="bg-light border-right">Last Name</th>
+                    <?php foreach (($criteria?:[]) as $cri): ?>
+                        <th scope="col" class="bg-light" style=""><small><?= ($cri['criteria']) ?></small></th>
+                    <?php endforeach; ?>
                 </tr>
                 </thead>
                 <tbody>
@@ -43,12 +42,17 @@
                         <th scope="row" id="row" style="background-color: lightyellow; width: 6%"><?= ($participant['id']) ?></th>
                         <td class="clickable"><?= ($participant['first_name']) ?></td>
                         <td class="clickable border-right"> <?= ($participant['last_name']) ?></td>
-                        <td class="clickable">10</td>
-                        <td class="clickable">20</td>
-                        <td class="clickable">30</td>
-                        <td class="clickable">12</td>
-                        <td class="border text-center pl-0 pr-0 bg-light submit"><small><strong>Submit</strong></small></td>
 
+                        <?php foreach (($scores?:[]) as $score): ?>
+                            <?php if ($score['participant_id'] == $participant['id']): ?>
+                                
+                                    <td class="clickable"><?= ($score['score']) ?></td>
+                                
+                                <?php else: ?>
+                                    <td class="p"></td>
+                                
+                            <?php endif; ?>
+                        <?php endforeach; ?>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
@@ -65,6 +69,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script>
+    $(".p").hide();
     $(".judge").hide();
     range = $('.slider > .range');
     value = $('.slider > .value');
@@ -87,11 +92,9 @@
 
     $(".clickable").on('click', function (e) {
         var selected = $(e.currentTarget).parent().attr("data-val");
-        // alert(selected);
         var selected = "http://asingh.greenriverdev.com/355/symposium/score/" + selected;
-        // var selected = "http://asingh.greenriverdev.com/355/symposium/" + selected;
-
         location.href = selected;
     });
+
 </script>
 </html>
